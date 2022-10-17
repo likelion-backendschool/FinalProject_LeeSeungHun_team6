@@ -1,7 +1,5 @@
 package com.example.ll.finalproject.util;
 
-
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -26,7 +24,6 @@ public class Ut {
 
         return map;
     }
-
 
     public static class url {
         public static boolean isUrl(String url) {

@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @Transactional
@@ -33,7 +33,6 @@ public class MemberServiceTests {
         memberService.join(username, password, email);
 
         Member foundMember = memberService.findByUsername("user10").get();
-        assertThat(foundMember.getCreateDate()).isNotNull();
         assertThat(foundMember.getUsername()).isNotNull();
         assertThat(passwordEncoder.matches(password, foundMember.getPassword())).isTrue();
     }

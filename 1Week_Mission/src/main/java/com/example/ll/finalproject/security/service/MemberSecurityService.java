@@ -1,8 +1,8 @@
-package com.example.marketapp.security.service;
+package com.example.ll.finalproject.security.service;
 
-import com.example.marketapp.member.entity.Member;
-import com.example.marketapp.member.repository.MemberRepository;
-import com.example.marketapp.security.dto.MemberContext;
+import com.example.ll.finalproject.member.entity.Member;
+import com.example.ll.finalproject.member.repository.MemberRepository;
+import com.example.ll.finalproject.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

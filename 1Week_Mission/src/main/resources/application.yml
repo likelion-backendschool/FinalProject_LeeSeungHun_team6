@@ -1,1 +1,36 @@
-
+spring:
+  profiles:
+    active: dev
+    include:
+      - base-addi
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: aaddss528528@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+logging:
+  level:
+    root: info
+    com.example.ll.finalproject: debug
+    org.hibernate.type.descriptor.sql: trace
+custom:
+  site:
+    name: FinalProject
+    baseUrl: "http://localhost:8010"
