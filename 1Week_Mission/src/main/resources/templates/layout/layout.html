@@ -67,6 +67,12 @@
                     회원가입
                 </span>
             </a>
+            <a href="/member/modify" class="inline-flex" sec:authorize="isAuthenticated()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    회원정보 수정
+                </span>
+            </a>
             <a href="javascript: document.logoutForm.submit();" class="inline-flex" sec:authorize="isAuthenticated()">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span class="ml-[2px] hidden sm:block">

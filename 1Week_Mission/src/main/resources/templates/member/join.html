@@ -19,7 +19,6 @@
                     if (MemberJoin__submitDone) {
                         return;
                     }
-
                     form.username.value = form.username.value.trim();
 
                     if (form.username.value.length == 0) {
@@ -37,6 +36,14 @@
 
                         return;
                     }
+                    form.nickname.value = form.nickname.value.trim();
+
+                    if (form.nickname.value.length == 0) {
+                        warningModal("닉네임 입력해주세요.");
+                        form.nickname.focus();
+
+                        return;
+                    }
 
                     form.email.value = form.email.value.trim();
 
@@ -44,6 +51,13 @@
                         warningModal("이메일을 입력해주세요.");
                         form.email.focus();
 
+                        return;
+                    }
+                    form.passwordConfirm.value=form.passwordConfirm.value.trim();
+
+                    if(form.password.value!=form.passwordConfirm.value){
+                        warningModal("비밀번호를 확인해주세요.");
+                        form.password.focus();
                         return;
                     }
 
@@ -62,6 +76,19 @@
                     <input autofocus type="text" name="username" placeholder="아이디" class="input input-bordered"
                            maxlength="50">
                 </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">닉네임</span>
+                    </label>
+                    <input type="text" name="nickname" placeholder="닉네임" class="input input-bordered" maxlength="50">
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">이메일</span>
+                    </label>
+                    <input type="email" name="email" placeholder="이메일" class="input input-bordered" maxlength="50">
+                </div>
 
                 <div class="form-control">
                     <label class="label">
@@ -70,12 +97,12 @@
                     <input type="password" name="password"
                            placeholder="비밀번호" class="input input-bordered" maxlength="50">
                 </div>
-
                 <div class="form-control">
                     <label class="label">
-                        <span class="label-text">이메일</span>
+                        <span class="label-text">비밀번호 확인</span>
                     </label>
-                    <input type="email" name="email" placeholder="이메일" class="input input-bordered" maxlength="50">
+                    <input type="password" name="passwordConfirm"
+                           placeholder="비밀번호 확인" class="input input-bordered" maxlength="50">
                 </div>
 
                 <div class="grid grid-cols-2 mt-2 gap-2">
