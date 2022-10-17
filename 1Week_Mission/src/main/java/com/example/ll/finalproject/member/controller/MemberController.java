@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,16 +27,11 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/exam")
-    public String exam(){
-        System.out.println("접근");
-        return "index";
-    }
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String showLogin(HttpServletRequest request) {
         String uri = request.getHeader("Referer");
-        if (uri != null && !uri.contains("/member/login")) {
+        if (uri != null && !uri.contains("/member/login")&&!uri.contains("/member/findPassword")) {
             request.getSession().setAttribute("prevPage", uri);
         }
 
@@ -94,5 +88,37 @@ public class MemberController {
         memberService.modifyPassword(member, password);
 
         return "redirect:/member/modifyPassword?msg=" + Ut.url.encode("비밀번호 수정이 완료되었습니다.");
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findUsername")
+    public String findUsername(){
+        return "member/findUsername";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findUsername")
+    public String findUsername(String email){
+        String memberUsername = memberService.enrolledEmail(email);
+        if(memberUsername==null){
+            return "redirect:/member/findUsername?errorMsg=" + Ut.url.encode("존재하지 않는 이메일입니다.");
+        }
+        return "redirect:/member/findUsername?msg=" + Ut.url.encode("아이디: "+memberUsername);
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/findPassword")
+    public String findPassword(){
+        return "member/findPassword";
+    }
+
+    @PreAuthorize("isAnonymous()")
+    @PostMapping("/findPassword")
+    public String findPassword(String username, String email){
+        Member member = memberService.enrolledUsernameAndEmail(username, email);
+        if(member==null){
+            return "redirect:/member/findPassword?errorMsg=" + Ut.url.encode("일치하지 않는 정보입니다.");
+        }
+        return "redirect:/member/findPassword?msg=" + Ut.url.encode("메일로 임시비밀번호가 발송되었습니다.");
     }
 }

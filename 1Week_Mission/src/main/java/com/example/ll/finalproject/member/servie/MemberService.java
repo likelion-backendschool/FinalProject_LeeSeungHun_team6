@@ -4,7 +4,10 @@ import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.exception.AlreadyJoinException;
 import com.example.ll.finalproject.member.repository.MemberRepository;
 import com.example.ll.finalproject.security.dto.MemberContext;
+import com.example.ll.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,9 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final JavaMailSender javaMailSender;
+
     public Member join(String username, String password, String email, String nickname) {
         if (memberRepository.findByUsername(username).isPresent()) {
             throw new AlreadyJoinException();
@@ -64,5 +70,33 @@ public class MemberService {
             return true;
         }
         return false;
+    }
+
+    public String enrolledEmail(String email) {
+        Member member = memberRepository.findByEmail(email).orElse(null);
+        if(member==null){
+            return null;
+        }
+        return member.getUsername();
+    }
+
+    public Member enrolledUsernameAndEmail(String username, String email) {
+        Member memberUsername = memberRepository.findByUsername(username).orElse(null);
+        Member memberEmail = memberRepository.findByEmail(email).orElse(null);
+        if(memberUsername==null || memberEmail==null || !(memberUsername.equals(memberEmail))){
+            return null;
+        }
+        String randomPassword = Ut.randomPassword();
+        memberEmail.setPassword(passwordEncoder.encode(randomPassword));
+        memberRepository.save(memberEmail);
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(memberEmail.getEmail());
+        simpleMailMessage.setSubject("임시 비밀번호 발급");
+        simpleMailMessage.setText(randomPassword);
+        javaMailSender.send(simpleMailMessage);
+
+
+        return memberUsername;
     }
 }

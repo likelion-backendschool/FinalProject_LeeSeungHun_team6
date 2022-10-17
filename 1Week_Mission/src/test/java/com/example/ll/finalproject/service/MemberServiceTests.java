@@ -29,8 +29,9 @@ public class MemberServiceTests {
         String username = "user10";
         String password = "1234";
         String email = "user10@test.com";
+        String nickname="nickname1";
 
-        memberService.join(username, password, email);
+        memberService.join(username, password, email, nickname);
 
         Member foundMember = memberService.findByUsername("user10").get();
         assertThat(foundMember.getUsername()).isNotNull();

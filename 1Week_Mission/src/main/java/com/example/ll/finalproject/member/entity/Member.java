@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
+@EqualsAndHashCode
 public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
