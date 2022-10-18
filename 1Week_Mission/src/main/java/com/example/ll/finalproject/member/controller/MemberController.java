@@ -31,7 +31,7 @@ public class MemberController {
     @GetMapping("/login")
     public String showLogin(HttpServletRequest request) {
         String uri = request.getHeader("Referer");
-        if (uri != null && !uri.contains("/member/login")&&!uri.contains("/member/findPassword")) {
+        if (uri != null && !uri.contains("/member")) {
             request.getSession().setAttribute("prevPage", uri);
         }
 

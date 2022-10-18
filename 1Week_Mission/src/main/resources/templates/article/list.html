@@ -2,14 +2,14 @@
 <html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>게시글 리스트</title>
+    <title>글 리스트</title>
 </head>
 
 <body>
 <main layout:fragment="main">
     <section class="section section-join flex-grow flex flex-col items-center justify-center">
         <div>
-            <h1>게시글 리스트</h1>
+            <h1>글 리스트</h1>
 
             <ul>
                 <li th:each="article : ${articles}" class="flex gap-2 items-center">
@@ -28,6 +28,9 @@
 
                 </li>
             </ul>
+            <div class="grid grid-cols-2 mt-2 gap-2">
+                <a href="/post/write" class="btn btn-secondary btn-outline">글 등록</a>
+            </div>
         </div>
 
     </section>

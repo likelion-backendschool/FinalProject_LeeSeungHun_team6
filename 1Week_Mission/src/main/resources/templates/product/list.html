@@ -16,18 +16,20 @@
                     <a th:href="@{|/product/${product.id}|}" th:text="|번호 : ${product.id}|">
                     </a>
 
-                    <a th:href="@{|/product/${product.id}|}" th:text="|제목 : ${product.subject}|">
+                    <a th:href="@{|/product/${product.id}|}" th:text="|상품명 : ${product.subject}|">
                     </a>
+                    <a th:href="@{|/product/${product.id}|}" th:text="|가격 : ${product.price}|">
+                    </a>
+
                     <a th:href="@{|/product/${product.id}|}" th:text="|작성자 : ${product.author.username}|">
                     </a>
-
                     <a th:href="@{|/product/${product.id}|}" th:text="|작성날짜 : ${product.createDate}|">
                     </a>
-                    <a th:href="@{|/product/${product.id}|}" th:text="|수정날짜 : ${product.modifyDate}|">
-                    </a>
-
                 </li>
             </ul>
+            <div class="grid grid-cols-2 mt-2 gap-2">
+                <a href="/product/create" class="btn btn-secondary btn-outline">도서등록</a>
+            </div>
         </div>
 
     </section>

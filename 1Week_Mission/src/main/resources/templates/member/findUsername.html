@@ -24,21 +24,20 @@
             </script>
 
             <form th:action method="POST" enctype="multipart/form-data" onsubmit="FindUsername__submit(this); return false;">
-
-                <div>
-                    <span>이메일</span>
-                    <input type="email" name="email">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">이메일</span>
+                    </label>
+                    <input autofocus type="email" name="email" placeholder="이메일" class="input input-bordered"
+                           maxlength="50">
                 </div>
-
-                <div>
-                    <span>아이디 찾기</span>
-                    <input type="submit" value="찾기">
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input type="submit" class="btn btn-secondary btn-outline" value="아이디 찾기"></input>
                 </div>
-
-                <br/><br/><br/>
-                <div>
-                    <span>비밀번호 찾기</span>
-                    <a href="/member/findPassword">찾기</a>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <a href="/member/findPassword" class="btn btn-secondary btn-outline">비밀번호 찾기</a>
+                    <a href="/member/login" class="btn btn-primary" >뒤로 가기</a>
                 </div>
             </form>
         </div>

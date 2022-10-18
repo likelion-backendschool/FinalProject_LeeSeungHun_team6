@@ -107,4 +107,8 @@ public class ArticleService {
     public String getContentFromContentHtml(String articleFormContentHtml) {
         return articleFormContentHtml.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
     }
+
+    public List<Article> findAllByMemberId(Long id) {
+        return articleRepository.findAllByAuthorId(id);
+    }
 }

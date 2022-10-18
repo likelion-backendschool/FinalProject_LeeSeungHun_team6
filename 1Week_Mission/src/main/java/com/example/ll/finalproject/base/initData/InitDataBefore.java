@@ -22,10 +22,12 @@ public interface InitDataBefore {
         Article article2 = articleService.write(member1, "제목2", "내용2", "<p>내용1</p>","#HTML #프로그래밍");
 
         Keyword keyword1 = keywordService.save("키워드1");
-//        Keyword keyword2 = new Keyword("프로그래밍");
-//
+        Keyword keyword2 = keywordService.save("키워드2");
+
+
         Product product1 = productService.create(member1, "제목1", 2_000, keyword1);
-//        Product product2 = productService.create(member1, "제목2", 4_000, keyword2);
+        Product product2 = productService.create(member1, "제목2", 4_000, keyword2);
+
 
     }
 }

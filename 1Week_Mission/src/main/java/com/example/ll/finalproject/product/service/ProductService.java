@@ -7,6 +7,8 @@ import com.example.ll.finalproject.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -33,5 +35,9 @@ public class ProductService {
         product.setSubject(subject);
         product.setPrice(price);
         productRepository.save(product);
+    }
+
+    public List<Product> getProducts() {
+        return productRepository.findAllByOrderByIdDesc();
     }
 }

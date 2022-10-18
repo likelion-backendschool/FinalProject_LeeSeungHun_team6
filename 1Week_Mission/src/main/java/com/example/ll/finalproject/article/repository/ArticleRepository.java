@@ -9,4 +9,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
 
     List<Article> findAllByOrderByIdDesc();
     List<Article> findTop100ByOrderByModifyDateDesc();
+    List<Article> findAllByAuthorId(Long id);
 }
