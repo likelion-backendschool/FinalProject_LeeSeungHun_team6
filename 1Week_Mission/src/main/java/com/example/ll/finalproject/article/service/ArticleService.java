@@ -70,10 +70,6 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
 
-    public List<Article> search(String kwType, String kw) {
-        return articleRepository.searchQsl(kwType, kw);
-    }
-
     public Article getForPrintArticleById(Long id) {
         Article article = getArticleById(id);
 
@@ -100,5 +96,9 @@ public class ArticleService {
 
     public List<Article> getRecentArticles() {
         return articleRepository.findTop100ByOrderByModifyDateDesc();
+    }
+
+    public List<Article> search(String kwType, String kw) {
+        return articleRepository.searchQsl(kwType, kw);
     }
 }

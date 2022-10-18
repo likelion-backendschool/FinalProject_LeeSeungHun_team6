@@ -16,6 +16,6 @@ import javax.persistence.Entity;
 public class Keyword extends BaseEntity {
     private String content;
     public String getListUrl() {
-        return "/article/list?kwType=keyword&kw=%s".formatted(content);
+        return "/post/list?kwType=hashTag&kw=%s".formatted(content);
     }
 }

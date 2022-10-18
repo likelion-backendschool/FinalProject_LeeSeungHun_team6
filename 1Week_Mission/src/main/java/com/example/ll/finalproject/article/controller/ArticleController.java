@@ -28,7 +28,12 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/list")
-    public String showList(Model model) {
+    public String showList(Model model, @RequestParam(required = false)String kwType, @RequestParam(required = false)String kw) {
+        if(kw!=null){
+            List<Article> articles = articleService.search(kwType,kw);
+            model.addAttribute("articles", articles);
+            return "article/list";
+        }
         List<Article> articles = articleService.getArticles();
         articleService.loadForPrintData(articles);
         model.addAttribute("articles", articles);
