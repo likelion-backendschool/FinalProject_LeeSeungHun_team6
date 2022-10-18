@@ -12,10 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,11 +31,7 @@ public class ArticleController {
     public String showList(Model model) {
         List<Article> articles = articleService.getArticles();
         articleService.loadForPrintData(articles);
-        for(Article article:articles){
-            System.out.println(article);
-        }
         model.addAttribute("articles", articles);
-
         return "article/list";
     }
     @PreAuthorize("isAuthenticated()")
@@ -75,8 +68,24 @@ public class ArticleController {
     @GetMapping("/{id}/modify")
     public String showModify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id) {
         Article article = articleService.getForPrintArticleById(id);
+        if (memberContext.memberIsNot(article.getAuthor())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         model.addAttribute("article", article);
         return "article/modify";
+    }
+    @PostMapping("/{id}/modify")
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable Long id, @Valid ArticleForm articleForm) {
+        Article article = articleService.getForPrintArticleById(id);
+
+        if (memberContext.memberIsNot(article.getAuthor())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        articleService.modify(article, articleForm.getSubject(), articleForm.getContent(), articleForm.getHashTagContents());
+
+        String msg = Ut.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
+        return "redirect:/post/%d?msg=%s".formatted(id, msg);
     }
 
 }

@@ -25,7 +25,26 @@ public class Article extends BaseEntity {
     private String subject;
     private String content;
     private String contentHtml;
+    public String getExtra_inputValue_hashTagContents() {
+        Map<String, Object> extra = getExtra();
 
+        if (extra.containsKey("hashTags") == false) {
+            return "";
+        }
+
+        List<HashTag> hashTags = (List<HashTag>) extra.get("hashTags");
+
+        if (hashTags.isEmpty()) {
+            return "";
+        }
+
+        return "#" + hashTags
+                .stream()
+                .map(hashTag -> "#" + hashTag.getKeyword().getContent())
+                .sorted()
+                .collect(Collectors.joining(" #"))
+                .trim();
+    }
     public String getExtra_hashTagLinks() {
         Map<String, Object> extra = getExtra();
 

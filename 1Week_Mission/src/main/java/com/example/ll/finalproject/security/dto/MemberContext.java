@@ -43,4 +43,10 @@ public class MemberContext extends User {
     public String getName() {
         return getUsername();
     }
+    public boolean memberIs(Member member) {
+        return id.equals(member.getId());
+    }
+    public boolean memberIsNot(Member member) {
+        return memberIs(member) == false;
+    }
 }

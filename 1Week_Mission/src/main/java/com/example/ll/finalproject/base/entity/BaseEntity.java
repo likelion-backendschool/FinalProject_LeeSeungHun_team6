@@ -1,9 +1,6 @@
 package com.example.ll.finalproject.base.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -29,6 +26,7 @@ public class BaseEntity {
     private Long id;
     @CreatedDate
     private LocalDateTime createDate;
+    @Setter
     @LastModifiedDate
     private LocalDateTime modifyDate;
 

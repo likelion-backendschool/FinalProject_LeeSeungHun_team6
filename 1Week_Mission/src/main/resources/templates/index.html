@@ -2,12 +2,35 @@
 <html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>메인페이지</title>
+    <title>메인 페이지</title>
 </head>
 
 <body>
 <main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>메인 페이지 최신 게시글 최대 100개</h1>
 
+            <ul>
+                <li th:each="article : ${articles}" class="flex gap-2 items-center">
+                    <a th:href="@{|/post/${article.id}|}" th:text="|번호 : ${article.id}|">
+                    </a>
+
+                    <a th:href="@{|/post/${article.id}|}" th:text="|제목 : ${article.subject}|">
+                    </a>
+                    <a th:href="@{|/post/${article.id}|}" th:text="|작성자 : ${article.author.username}|">
+                    </a>
+
+                    <a th:href="@{|/post/${article.id}|}" th:text="|작성날짜 : ${article.createDate}|">
+                    </a>
+                    <a th:href="@{|/post/${article.id}|}" th:text="|수정날짜 : ${article.modifyDate}|">
+                    </a>
+
+                </li>
+            </ul>
+        </div>
+
+    </section>
 
 </main>
 </body>

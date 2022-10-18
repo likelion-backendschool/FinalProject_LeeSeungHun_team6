@@ -89,4 +89,16 @@ public class ArticleService {
         hashTagService.deleteHashTag(hashTags);
         articleRepository.delete(article);
     }
+
+    public void modify(Article article, String subject, String content, String hashTagContents) {
+        article.setSubject(subject);
+        article.setContent(content);
+
+        articleRepository.save(article);
+        hashTagService.applyHashTags(article, hashTagContents);
+    }
+
+    public List<Article> getRecentArticles() {
+        return articleRepository.findTop100ByOrderByModifyDateDesc();
+    }
 }
