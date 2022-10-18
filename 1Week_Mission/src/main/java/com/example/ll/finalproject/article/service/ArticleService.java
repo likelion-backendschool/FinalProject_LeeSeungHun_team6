@@ -46,6 +46,11 @@ public class ArticleService {
         });
     }
 
+    public void loadForPrintData(Article article) {
+        List<HashTag> hashTags = hashTagService.getHashTags(article);
+        article.getExtra().put("hashTags", hashTags);
+    }
+
     public Article write(Member member, String subject, String content,String hashTagContents) {
         Article article = Article
                 .builder()
@@ -67,5 +72,21 @@ public class ArticleService {
 
     public List<Article> search(String kwType, String kw) {
         return articleRepository.searchQsl(kwType, kw);
+    }
+
+    public Article getForPrintArticleById(Long id) {
+        Article article = getArticleById(id);
+
+        loadForPrintData(article);
+
+        return article;
+    }
+
+
+    public void deleteArticle(Long id) {
+        Article article = articleRepository.findById(id).orElse(null);
+        List<HashTag> hashTags = hashTagService.getHashTags(article);
+        hashTagService.deleteHashTag(hashTags);
+        articleRepository.delete(article);
     }
 }

@@ -72,4 +72,9 @@ public class HashTagService {
         return hashTagRepository.findAllByArticleId(article.getId());
     }
 
+    public void deleteHashTag(List<HashTag> hashTags) {
+        for(HashTag hashTag: hashTags){
+            hashTagRepository.delete(hashTag);
+        }
+    }
 }

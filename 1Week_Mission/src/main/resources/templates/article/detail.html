@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
 
+<head>
+    <title>글 상세페이지</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>글 상세페이지</h1>
+            <!--        [[${article}]]-->
+            <div>
+                번호 : [[${article.id}]]
+            </div>
+            <div>
+                제목 : [[${article.subject}]]
+            </div>
+            <div>
+                작성자 : [[${article.author.username}]]
+            </div>
+            <div>
+                작성날짜 : [[${article.createDate}]]
+            </div>
+
+            <div>
+                수정날짜 : [[${article.modifyDate}]]
+            </div>
+            <div>
+                내용 : [[${article.content}]]
+            </div>
+            <div>
+                해시태그 :
+                <th:block th:utext="${article.extra_hashTagLinks}"/>
+            </div>
+
+            <div class="py-3">
+                <a th:href="@{|/post/list|}" class="btn btn-sm btn-secondary">목록</a>
+
+                <a th:if="${article.author.username==#authentication.principal.username}" th:href="@{|/post/${article.id}/modify|}" class="btn btn-sm btn-secondary">수정</a>
+                <a th:if="${article.author.username==#authentication.principal.username}" onclick="return confirm('정말로 삭제하시겠습니까?')" th:href="@{|/post/${article.id}/delete|}" class="btn btn-sm btn-secondary">삭제</a>
+            </div>
+        </div>
+    </section>
+</main>
 </body>
 </html>

@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
 
+<head>
+    <title>글 작성</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>글 작성</h1>
+            <script>
+                function WriteForm__submit(form) {
+                    form.subject.value = form.subject.value.trim();
+
+                    if (form.subject.value.length == 0) {
+                        warningModal("제목을 입력해주세요.");
+                        form.subject.focus();
+                        return;
+                    }
+
+                    form.content.value = form.content.value.trim();
+
+                    if (form.content.value.length == 0) {
+                        warningModal("내용을 입력해주세요.");
+                        form.content.focus();
+                        return;
+                    }
+
+                    form.submit();
+                }
+
+            </script>
+            <form th:action method="POST" enctype="multipart/form-data" onsubmit="WriteForm__submit(this); return false;">
+                <div>
+                    <span>제목</span>
+                    <input type="text" name="subject">
+                </div>
+                <div>
+                    <span>내용</span>
+                    <textarea name="content"></textarea>
+                </div>
+                <span>해시태그</span>
+                <input type="text" name="hashTagContents" placeholder="#태그1 #태그2" />
+                <div>
+                    <span>글쓰기</span>
+                    <input type="submit" value="작성">
+                </div>
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
 </body>
 </html>
