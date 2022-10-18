@@ -59,13 +59,16 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify")
-    public String modify(@AuthenticationPrincipal MemberContext context, String email, String nickname) {
-        Member member = memberService.getMemberById(context.getId());
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, String email, String nickname) {
+        Member member = memberService.getMemberById(memberContext.getId());
 
-        memberService.modify(context, member, email, nickname);
+        memberService.modify(member, email, nickname);
 
         // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 시작
-        Authentication authentication = new UsernamePasswordAuthenticationToken(context, member.getPassword(), context.getAuthorities());
+        memberContext.setModifyDate(member.getModifyDate());
+        memberContext.setEmail(member.getEmail());
+        memberContext.setNickname(member.getNickname());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 끝
 

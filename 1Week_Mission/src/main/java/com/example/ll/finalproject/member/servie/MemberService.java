@@ -51,14 +51,10 @@ public class MemberService {
         return member;
     }
 
-    public void modify(MemberContext memberContext, Member member, String email, String nickname) {
+    public void modify(Member member, String email, String nickname) {
         member.setEmail(email);
         member.setNickname(nickname);
         memberRepository.save(member);
-
-        memberContext.setModifyDate(member.getModifyDate());
-        memberContext.setEmail(member.getEmail());
-        memberContext.setNickname(member.getNickname());
     }
     public void modifyPassword(Member member,String password) {
         member.setPassword(passwordEncoder.encode(password));
@@ -86,17 +82,18 @@ public class MemberService {
         if(memberUsername==null || memberEmail==null || !(memberUsername.equals(memberEmail))){
             return null;
         }
+        sendEmailRandomPassword(memberEmail);
+        return memberUsername;
+    }
+    public void sendEmailRandomPassword(Member member){
         String randomPassword = Ut.randomPassword();
-        memberEmail.setPassword(passwordEncoder.encode(randomPassword));
-        memberRepository.save(memberEmail);
+        member.setPassword(passwordEncoder.encode(randomPassword));
+        memberRepository.save(member);
 
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(memberEmail.getEmail());
+        simpleMailMessage.setTo(member.getEmail());
         simpleMailMessage.setSubject("임시 비밀번호 발급");
         simpleMailMessage.setText(randomPassword);
         javaMailSender.send(simpleMailMessage);
-
-
-        return memberUsername;
     }
 }

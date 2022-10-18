@@ -37,4 +37,45 @@ public class MemberServiceTests {
         assertThat(foundMember.getUsername()).isNotNull();
         assertThat(passwordEncoder.matches(password, foundMember.getPassword())).isTrue();
     }
+
+    @Test
+    @DisplayName("회원정보수정")
+    void t2() {
+        String username = "user10";
+        String password = "1234";
+        String email = "user10@test.com";
+        String nickname="nickname10";
+
+        memberService.join(username, password, email, nickname);
+
+        Member member = memberService.findByUsername("user10").get();
+
+        email = "modifyUser10@test.com";
+        nickname="modifyNickname10";
+        memberService.modify(member, email, nickname);
+
+        assertThat(member.getNickname()).isEqualTo(nickname);
+        assertThat(member.getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    @DisplayName("ID 찾기")
+    void t3() {
+        String username = "user10";
+        String password = "1234";
+        String email = "user10@test.com";
+        String nickname="nickname10";
+
+        memberService.join(username, password, email, nickname);
+
+        Member member = memberService.findByUsername("user10").get();
+        String emailMock = "user11@test.com";
+        String memberUsername = memberService.enrolledEmail(email);
+        assertThat(memberUsername).isNotNull();
+        String notMemberUsername = memberService.enrolledEmail(emailMock);
+        assertThat(notMemberUsername).isNull();
+    }
+
+
+
 }
