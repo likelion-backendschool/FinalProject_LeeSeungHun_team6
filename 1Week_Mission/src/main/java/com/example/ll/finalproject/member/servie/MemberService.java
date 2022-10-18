@@ -3,7 +3,6 @@ package com.example.ll.finalproject.member.servie;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.exception.AlreadyJoinException;
 import com.example.ll.finalproject.member.repository.MemberRepository;
-import com.example.ll.finalproject.security.dto.MemberContext;
 import com.example.ll.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -95,5 +94,10 @@ public class MemberService {
         simpleMailMessage.setSubject("임시 비밀번호 발급");
         simpleMailMessage.setText(randomPassword);
         javaMailSender.send(simpleMailMessage);
+    }
+
+    public Member findById(long id) {
+        Member member = memberRepository.findById(id).orElse(null);
+        return member;
     }
 }

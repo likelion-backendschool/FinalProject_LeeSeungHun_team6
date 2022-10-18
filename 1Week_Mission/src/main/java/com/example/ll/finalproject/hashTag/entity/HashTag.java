@@ -2,7 +2,6 @@ package com.example.ll.finalproject.hashTag.entity;
 
 import com.example.ll.finalproject.article.entity.Article;
 import com.example.ll.finalproject.base.entity.BaseEntity;
-
 import com.example.ll.finalproject.keyword.entity.Keyword;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
