@@ -14,8 +14,8 @@ public interface InitDataBefore {
         Member member3 = memberService.join("user3", password, "user3@test.com", "nickname3");
         Member member4 = memberService.join("user4", password, "user4@test.com", "nickname4");
 
-        Article article1 = articleService.write(member1, "제목1", "내용1", "#자바 #프로그래밍");
-        Article article2 = articleService.write(member1, "제목2", "내용2", "#HTML #프로그래밍");
+        Article article1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>","#자바 #프로그래밍");
+        Article article2 = articleService.write(member1, "제목2", "내용2", "<p>내용1</p>","#HTML #프로그래밍");
 
     }
 }

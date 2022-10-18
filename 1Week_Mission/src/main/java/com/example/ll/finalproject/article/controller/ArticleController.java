@@ -54,9 +54,14 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm) {
+    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, BindingResult bindingResult) {
 
-        Article article = articleService.write(memberContext.getMember(), articleForm.getSubject(), articleForm.getContent(), articleForm.getHashTagContents());
+        if(bindingResult.hasErrors()){
+            return "redirect:/post/write?warningMsg=" + Ut.url.encode("내용을 입력해주세요.");
+        }
+        String articleFormContentHtml =articleForm.getContent();
+        String articleGetContent = articleService.getContentFromContentHtml(articleFormContentHtml);
+        Article article = articleService.write(memberContext.getMember(), articleForm.getSubject(), articleGetContent,articleFormContentHtml, articleForm.getHashTagContents());
 
         String msg = "%d번 게시물이 작성되었습니다.".formatted(article.getId());
         msg = Ut.url.encode(msg);
@@ -80,14 +85,19 @@ public class ArticleController {
         return "article/modify";
     }
     @PostMapping("/{id}/modify")
-    public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable Long id, @Valid ArticleForm articleForm) {
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable Long id, @Valid ArticleForm articleForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "redirect:/post/write?warningMsg=" + Ut.url.encode("내용을 입력해주세요.");
+        }
         Article article = articleService.getForPrintArticleById(id);
 
         if (memberContext.memberIsNot(article.getAuthor())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+        String articleFormContentHtml =articleForm.getContent();
+        String articleGetContent = articleService.getContentFromContentHtml(articleFormContentHtml);
 
-        articleService.modify(article, articleForm.getSubject(), articleForm.getContent(), articleForm.getHashTagContents());
+        articleService.modify(article, articleForm.getSubject(), articleGetContent, articleFormContentHtml,articleForm.getHashTagContents());
 
         String msg = Ut.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
         return "redirect:/post/%d?msg=%s".formatted(id, msg);

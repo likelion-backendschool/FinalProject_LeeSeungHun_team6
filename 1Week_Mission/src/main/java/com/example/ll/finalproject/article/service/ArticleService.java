@@ -51,12 +51,13 @@ public class ArticleService {
         article.getExtra().put("hashTags", hashTags);
     }
 
-    public Article write(Member member, String subject, String content,String hashTagContents) {
+    public Article write(Member member, String subject, String content,String contentHtml,String hashTagContents) {
         Article article = Article
                 .builder()
                 .author(member)
                 .subject(subject)
                 .content(content)
+                .contentHtml(contentHtml)
                 .build();
 
         articleRepository.save(article);
@@ -86,9 +87,10 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
-    public void modify(Article article, String subject, String content, String hashTagContents) {
+    public void modify(Article article, String subject, String content,String contentHtml, String hashTagContents) {
         article.setSubject(subject);
         article.setContent(content);
+        article.setContentHtml(contentHtml);
 
         articleRepository.save(article);
         hashTagService.applyHashTags(article, hashTagContents);
@@ -100,5 +102,9 @@ public class ArticleService {
 
     public List<Article> search(String kwType, String kw) {
         return articleRepository.searchQsl(kwType, kw);
+    }
+
+    public String getContentFromContentHtml(String articleFormContentHtml) {
+        return articleFormContentHtml.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
     }
 }
