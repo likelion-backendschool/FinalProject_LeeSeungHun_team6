@@ -62,6 +62,25 @@
                 <th:block th:utext="${product.extra_hashTagLinks}"/>
 
             </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">글 키워드</span>
+                </label>
+                <ul>
+                    <li th:each="article : ${articles}" class="flex gap-2 items-center">
+                        <a th:href="@{|/post/${article.id}|}" th:text="|번호 : ${article.id}|">
+                        </a>
+
+                        <a th:href="@{|/post/${article.id}|}" th:text="|제목 : ${article.subject}|">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
+
+
+
 
             <div class="py-3">
                 <a th:href="@{|/product/list|}" class="btn btn-sm btn-secondary">목록</a>

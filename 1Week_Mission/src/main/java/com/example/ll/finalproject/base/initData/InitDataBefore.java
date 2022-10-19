@@ -10,6 +10,9 @@ import com.example.ll.finalproject.member.servie.MemberService;
 import com.example.ll.finalproject.product.entity.Product;
 import com.example.ll.finalproject.product.service.ProductService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface InitDataBefore {
     default void before(MemberService memberService, ArticleService articleService, ProductService productService, KeywordService keywordService){
         String password = "1234";
@@ -23,10 +26,12 @@ public interface InitDataBefore {
 
 //        Keyword keyword1 = keywordService.save("키워드1");
 //        Keyword keyword2 = keywordService.save("키워드2");
+        List<Article> articleList = new ArrayList<>();
+        articleList.add(article1);
+        articleList.add(article2);
 
-
-        Product product1 = productService.create(member1, "제목1", 2_000, "#자바 #프로그래밍");
-        Product product2 = productService.create(member1, "제목2", 4_000, "#자바 #프로그래밍");
+        Product product1 = productService.create(member1, "제목1", 2_000, "#자바 #프로그래밍", articleList);
+        Product product2 = productService.create(member1, "제목2", 4_000, "#자바 #프로그래밍", articleList);
 
 
     }

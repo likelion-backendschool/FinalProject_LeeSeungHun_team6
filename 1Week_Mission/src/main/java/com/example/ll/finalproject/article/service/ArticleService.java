@@ -9,6 +9,7 @@ import com.example.ll.finalproject.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +72,17 @@ public class ArticleService {
     public Article getArticleById(Long id) {
         return articleRepository.findById(id).orElse(null);
     }
+    
+    //View에서 받아온 ArticleID들의 값을 분리하고 그에 해당하는 ArticleList를 리턴
+    public List<Article> getArticleById(String id) {
+        List<Article> articles = new ArrayList<>();
+        String[] articleIds = id.split(",");
+        for(int i=0; i<articleIds.length; i++){
+            Article article = this.getArticleById(Long.parseLong(articleIds[i]));
+            articles.add(article);
+        }
+        return articles;
+    }
 
     public Article getForPrintArticleById(Long id) {
         Article article = getArticleById(id);
@@ -124,4 +136,6 @@ public class ArticleService {
     public List<Article> findAllByMemberId(Long id) {
         return articleRepository.findAllByAuthorId(id);
     }
+
+
 }

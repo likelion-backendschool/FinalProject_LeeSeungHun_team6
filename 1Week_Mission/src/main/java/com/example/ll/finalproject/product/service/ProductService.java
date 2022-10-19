@@ -17,8 +17,9 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductTagService productTagService;
+    private final ProductInterArticleService productInterArticleService;
 
-    public Product create(Member member, String subject, int price, String productTagsContents) {
+    public Product create(Member member, String subject, int price, String productTagsContents, List<Article> articles) {
         Product product = Product.builder()
                 .price(price)
                 .author(member)
@@ -27,6 +28,7 @@ public class ProductService {
 
         productRepository.save(product);
         productTagService.applyProductTags(product, productTagsContents);
+        productInterArticleService.applyArticles(product, articles);
         return product;
     }
 

@@ -11,6 +11,7 @@ import com.example.ll.finalproject.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.product.dto.request.ProductForm;
 import com.example.ll.finalproject.product.entity.Product;
+import com.example.ll.finalproject.product.service.ProductInterArticleService;
 import com.example.ll.finalproject.product.service.ProductService;
 import com.example.ll.finalproject.security.dto.MemberContext;
 import com.example.ll.finalproject.util.Ut;
@@ -29,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,6 +40,8 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final ArticleService articleService;
+
+    private final ProductInterArticleService productInterArticleService;
     @GetMapping("/list")
     public String showProductList(Model model) {
         List<Product> products = productService.getProducts();
@@ -55,15 +59,15 @@ public class ProductController {
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ProductForm productForm, BindingResult bindingResult, Model model) {
+    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ProductForm productForm, BindingResult bindingResult) {
         Member member = memberContext.getMember();
 
         if(bindingResult.hasErrors()){
-            return "redirect:/product/create?warningMsg=" + Ut.url.encode("내용을 입력해주세요.");
+            return "redirect:/product/create?warningMsg=" + Ut.url.encode("제목을 입력해주세요.");
         }
-        System.out.println(productForm.getArticleId());
-        Product product = productService.create(member, productForm.getSubject(), productForm.getPrice(), productForm.getProductTagContents());
-//        Product product1 = productService.create(member1, "제목1", 2_000, keyword1);
+        List<Article> articles = articleService.getArticleById(productForm.getArticleId());
+
+        Product product = productService.create(member, productForm.getSubject(), productForm.getPrice(), productForm.getProductTagContents(), articles);
 
         String msg = "%d번 도서가 작성되었습니다.".formatted(product.getId());
         msg = Ut.url.encode(msg);
@@ -74,7 +78,9 @@ public class ProductController {
     @GetMapping("/{id}")
     public String showProductDetail(Model model, @PathVariable Long id) {
         Product product = productService.getLoadForPrintProduct(id);
+        List<Article> articles = productInterArticleService.getProductInterArticle(id);
         model.addAttribute("product", product);
+        model.addAttribute("articles", articles);
         return "product/detail";
     }
     @PreAuthorize("isAuthenticated()")
@@ -87,10 +93,12 @@ public class ProductController {
     @GetMapping("/{id}/modify")
     public String showModify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id) {
         Product product = productService.getLoadForPrintProduct(id);
+        List<Article> articles = productInterArticleService.getProductInterArticle(id);
         if (memberContext.memberIsNot(product.getAuthor())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         model.addAttribute("product", product);
+        model.addAttribute("articles", articles);
         return "product/modify";
     }
     @PostMapping("/{id}/modify")
