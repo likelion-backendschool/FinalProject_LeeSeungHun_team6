@@ -25,13 +25,13 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/list")
-    public String showList(Model model, @RequestParam(required = false)String kwType, @RequestParam(required = false)String kw) {
+    public String showList(Model model, @RequestParam(required = false)String kwType, @RequestParam(required = false)String kw, @AuthenticationPrincipal MemberContext memberContext) {
         if(kw!=null){
-            List<Article> articles = articleService.search(kwType,kw);
+            List<Article> articles = articleService.search(kwType,kw, memberContext);
             model.addAttribute("articles", articles);
             return "article/list";
         }
-        List<Article> articles = articleService.getArticles();
+        List<Article> articles = articleService.getRecentArticles();
         articleService.loadForPrintData(articles);
         model.addAttribute("articles", articles);
         return "article/list";
@@ -42,6 +42,7 @@ public class ArticleController {
         return "article/write";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String showDetail(Model model, @PathVariable Long id) {
         Article article = articleService.getForPrintArticleById(id);
@@ -64,7 +65,7 @@ public class ArticleController {
         msg = Ut.url.encode(msg);
         return "redirect:/post/%d?msg=%s".formatted(article.getId(), msg);
     }
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/delete")
     public String deleteArticle(Model model, @PathVariable Long id) {
         articleService.deleteArticle(id);
@@ -84,7 +85,7 @@ public class ArticleController {
     @PostMapping("/{id}/modify")
     public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable Long id, @Valid ArticleForm articleForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "redirect:/post/write?warningMsg=" + Ut.url.encode("내용을 입력해주세요.");
+            return "redirect:/post/"+id+"/modify?warningMsg=" + Ut.url.encode("내용을 입력해주세요.");
         }
         Article article = articleService.getForPrintArticleById(id);
 

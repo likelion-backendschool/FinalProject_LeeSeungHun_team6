@@ -38,27 +38,35 @@
 
 
             <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
-                <div>
-                    <span>아이디</span>
-                    <span th:text="${#authentication.principal.username}"></span>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">아이디</span>
+                    </label>
+                    <span autofocus th:text="${#authentication.principal.username}" class="input input-bordered"
+                          maxlength="50"></span>
                 </div>
-                <div>
-                    <span>이메일</span>
-                    <input type="text" name="email" th:value="${#authentication.principal.email}">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">이메일</span>
+                    </label>
+                    <input autofocus type="email" name="email" placeholder="이메일" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.email}">
                 </div>
-                <div>
-                    <span>닉네임</span>
-                    <input type="text" name="nickname" th:value="${#authentication.principal.nickname}">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">닉네임</span>
+                    </label>
+                    <input autofocus type="text" name="nickname" placeholder="닉네임" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.nickname}">
                 </div>
 
-                <div>
-                    <span>회원정보 수정</span>
-                    <input type="submit" value="수정">
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input class="btn btn-primary" type="submit" value="회원정보 수정">
                 </div>
-                <br/><br/><br/>
-                <div>
-                    <span>비밀번호 수정</span>
-                    <a href="/member/modifyPassword">수정</a>
+                <br/><br/><br/><br/><br/><br/>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <a href="/member/modifyPassword" class="btn btn-secondary btn-outline">비밀번호 수정</a>
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
                 </div>
             </form>
         </div>

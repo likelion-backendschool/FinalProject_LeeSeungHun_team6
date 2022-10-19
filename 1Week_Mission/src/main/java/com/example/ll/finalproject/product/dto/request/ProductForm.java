@@ -1,4 +1,4 @@
-package com.example.ll.finalproject.article.dto.request;
+package com.example.ll.finalproject.product.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,11 +7,11 @@ import javax.validation.constraints.NotEmpty;
 
 @Setter
 @Getter
-public class ArticleForm {
+public class ProductForm {
     @NotEmpty
     private String subject;
     @NotEmpty
-    private String content;
+    private String articleId;
     private int price;
-    private String hashTagContents;
+    private String productTagContents;
 }

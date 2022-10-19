@@ -37,13 +37,4 @@ public class KeywordService {
         return keyword;
     }
 
-    public List<Keyword> getKeywordByHashTag(List<HashTag> hashTags) {
-        List<Keyword> keywords = new ArrayList<>();
-        for(HashTag hashTag: hashTags){
-            Keyword keyword = keywordRepository.findById(hashTag.getKeyword().getId()).orElse(null);
-            keywords.add(keyword);
-            keywords = keywords.stream().distinct().collect(Collectors.toList());
-        }
-        return keywords;
-    }
 }

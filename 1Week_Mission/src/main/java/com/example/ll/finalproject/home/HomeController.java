@@ -14,7 +14,7 @@ import java.util.List;
 public class HomeController {
     private final ArticleService articleService;
 
-    @GetMapping
+    @GetMapping("/")
     public String home(Model model){
         List<Article> articles = articleService.getRecentArticles();
         articleService.loadForPrintData(articles);

@@ -70,19 +70,6 @@ public class HashTagService {
     public List<HashTag> getHashTags(Article article) {
         return hashTagRepository.findAllByArticleId(article.getId());
     }
-    public List<HashTag> getHashTags(List<Article> articles) {
-        //해당 멤버가 작성한 게시글들의 모든 키워드를 구하기 위함
-        List<HashTag> hashTagFromArticles = new ArrayList<>();
-        for(Article article:articles){
-            List<HashTag> hashTags = hashTagRepository.findAllByArticleId(article.getId());
-            //리스트에 리스트 추가
-            hashTagFromArticles.addAll(hashTags);
-            //중복 제거
-            hashTagFromArticles = hashTagFromArticles.stream().distinct().collect(Collectors.toList());
-        }
-        return hashTagFromArticles;
-    }
-
 
     public void deleteHashTag(List<HashTag> hashTags) {
         for(HashTag hashTag: hashTags){

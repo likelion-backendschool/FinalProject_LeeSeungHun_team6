@@ -5,6 +5,7 @@ import com.example.ll.finalproject.article.repository.ArticleRepository;
 import com.example.ll.finalproject.hashTag.entity.HashTag;
 import com.example.ll.finalproject.hashTag.service.HashTagService;
 import com.example.ll.finalproject.member.entity.Member;
+import com.example.ll.finalproject.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -100,8 +101,20 @@ public class ArticleService {
         return articleRepository.findTop100ByOrderByModifyDateDesc();
     }
 
-    public List<Article> search(String kwType, String kw) {
-        return articleRepository.searchQsl(kwType, kw);
+    public List<Article> search(String kwType, String kw, MemberContext memberContext) {
+        List<Article> articles = articleRepository.searchQsl(kwType, kw);
+        for(int i=articles.size()-1; i>=0; i--){
+            Article article = articles.get(i);
+            String user1 = article.getAuthor().getUsername();
+            String user2 = memberContext.getMember().getUsername();
+            if(!user1.equals(user2)){
+                articles.remove(article);
+            }
+        }
+        if(articles==null){
+            return null;
+        }
+        return articles;
     }
 
     public String getContentFromContentHtml(String articleFormContentHtml) {

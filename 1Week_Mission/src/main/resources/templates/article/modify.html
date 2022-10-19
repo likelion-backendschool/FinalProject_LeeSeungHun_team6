@@ -18,7 +18,7 @@
                     form.subject.value = form.subject.value.trim();
 
                     if (form.subject.value.length == 0) {
-                        alert("제목을 입력해주세요.");
+                        warningModal("제목을 입력해주세요.");
                         form.subject.focus();
                         return;
                     }
@@ -27,26 +27,33 @@
                 }
             </script>
             <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
-                <div>
-                    <span>제목</span>
-                    <input type="text" name="subject" th:value="${article.subject}">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">제목</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="제목" class="input input-bordered"
+                           maxlength="50" th:value="${article.subject}">
                 </div>
-                <div>
-                    <span>내용</span>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">내용</span>
+                    </label>
                     <textarea id="editor" name="content" th:text="${article.content}"></textarea>
                     <script>
                         CKEDITOR.replace('content');
                     </script>
                 </div>
-                <div>
-                    <span>해시태그</span>
-                    <input type="text" name="hashTagContents" placeholder="#태그1 #태그2"
-                           th:value="${article.extra_inputValue_hashTagContents}"/>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">해시 태그</span>
+                    </label>
+                    <input autofocus type="text" name="hashTagContents" placeholder="#태그1 #태그2" class="input input-bordered"
+                           maxlength="50" th:value="${article.extra_inputValue_hashTagContents}">
                 </div>
 
-                <div>
-                    <span>글수정</span>
-                    <input type="submit" value="수정">
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input type="submit" class="btn btn-secondary btn-outline" value="수정">
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
                 </div>
             </form>
         </div>
