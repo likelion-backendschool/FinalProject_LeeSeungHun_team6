@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberSecurityService implements UserDetailsService {
     private final MemberRepository memberRepository;
+    //기존에 Member 객체가 아닌 MemberContext를 사용함으로써 컨트로러에서 부가적인 사용자의 정보를 사용가능
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsername(username).get();

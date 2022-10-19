@@ -25,6 +25,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom{
                 .orderBy(article.id.desc())
                 .fetch();
     }
+    //해당되는 키워드를 가진 모든 글을 얻기 위함
     @Override
     public List<Article> searchQsl(String kwType, String kw) {
         JPAQuery<Article> jpqQuery = jpaQueryFactory

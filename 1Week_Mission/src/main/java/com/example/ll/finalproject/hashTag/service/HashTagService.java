@@ -23,9 +23,11 @@ public class HashTagService {
         return hashTagRepository.findAllByArticleIdIn(ids);
     }
 
+    //해당 게시글에 해시태그를 붙이기 위한 작업
     public void applyHashTags(Article article, String hashTagContents) {
         List<HashTag> oldHashTags = getHashTags(article);
 
+        //해시태그를 String형태의 List로 추출
         List<String> keywordContents = Arrays.stream(hashTagContents.split("#"))
                 .map(String :: trim)
                 .filter(s -> s.length() >0)
@@ -34,6 +36,7 @@ public class HashTagService {
 
         List<HashTag> needToDelete = new ArrayList<>();
 
+        //기존에 존재하던 해시태그를 삭제하는 작업
         for (HashTag oldHashTag : oldHashTags) {
             boolean contains = keywordContents.stream().anyMatch(s -> s.equals(oldHashTag.getKeyword().getContent()));
 
@@ -50,8 +53,8 @@ public class HashTagService {
         keywordContents.forEach(keywordContent -> {
             saveHashTag(article, keywordContent);
         });
-
     }
+
     private HashTag saveHashTag(Article article, String keywordContent) {
         Keyword keyword = keywordService.save(keywordContent);
         Optional<HashTag> opHashTag = hashTagRepository.findByArticleIdAndKeywordId(article.getId(), keyword.getId());

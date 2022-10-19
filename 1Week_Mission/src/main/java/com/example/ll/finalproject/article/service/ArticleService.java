@@ -26,6 +26,7 @@ public class ArticleService {
         return articleRepository.findAllByOrderByIdDesc();
     }
 
+    //글 리스트를 보여줄 때 각각의 글에 해당되는 해시태그를 붙여주는 작업이 필요함
     public void loadForPrintData(List<Article> articles) {
         long[] ids = articles
                 .stream()
@@ -48,6 +49,7 @@ public class ArticleService {
         });
     }
 
+    //글에 작성한 해시태그를 붙이기 위함
     public void loadForPrintData(Article article) {
         List<HashTag> hashTags = hashTagService.getHashTags(article);
         article.getExtra().put("hashTags", hashTags);
@@ -113,6 +115,7 @@ public class ArticleService {
         return articleRepository.findTop100ByOrderByModifyDateDesc();
     }
 
+    //해당 키워드가 존재하는 게시글을 검색하는데 자신이 작성한 게시글만 추출하기 위함
     public List<Article> search(String kwType, String kw, MemberContext memberContext) {
         List<Article> articles = articleRepository.searchQsl(kwType, kw);
         for(int i=articles.size()-1; i>=0; i--){
@@ -129,6 +132,7 @@ public class ArticleService {
         return articles;
     }
 
+    //html태그들을 분리하고 그 안에 텍스트만 뽑아낸다.
     public String getContentFromContentHtml(String articleFormContentHtml) {
         return articleFormContentHtml.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
     }

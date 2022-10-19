@@ -16,6 +16,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model){
+        //최근 글 100개만 보여줌
         List<Article> articles = articleService.getRecentArticles();
         articleService.loadForPrintData(articles);
 

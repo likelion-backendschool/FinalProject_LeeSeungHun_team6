@@ -36,8 +36,8 @@ public class SecurityConfig {
                                 .loginPage("/member/login") // GET
                                 .loginProcessingUrl("/member/login") // POST
                                 .defaultSuccessUrl("/")
-                                .successHandler(authenticationSuccessHandler)
-                                .failureHandler(authenticationFailureHandler)
+                                .successHandler(authenticationSuccessHandler) //로그인 성공 핸들러
+                                .failureHandler(authenticationFailureHandler) //로그인 실패 핸들러
                 )
                 .logout(logout -> logout
                         .logoutUrl("/member/logout")

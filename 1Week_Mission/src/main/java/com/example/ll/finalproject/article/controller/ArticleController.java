@@ -65,6 +65,7 @@ public class ArticleController {
         msg = Ut.url.encode(msg);
         return "redirect:/post/%d?msg=%s".formatted(article.getId(), msg);
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/delete")
     public String deleteArticle(Model model, @PathVariable Long id) {
@@ -82,6 +83,7 @@ public class ArticleController {
         model.addAttribute("article", article);
         return "article/modify";
     }
+
     @PostMapping("/{id}/modify")
     public String modify(@AuthenticationPrincipal MemberContext memberContext, @PathVariable Long id, @Valid ArticleForm articleForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
@@ -92,6 +94,7 @@ public class ArticleController {
         if (memberContext.memberIsNot(article.getAuthor())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+        //렌더링결과(html)은 articleFormContentHtml에 저장하고 getContentFromContentHtml 함수를 통해 원본을 뽑아낸다.
         String articleFormContentHtml =articleForm.getContent();
         String articleGetContent = articleService.getContentFromContentHtml(articleFormContentHtml);
 

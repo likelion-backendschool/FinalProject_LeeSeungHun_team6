@@ -19,6 +19,7 @@ public class ProductService {
     private final ProductTagService productTagService;
     private final ProductInterArticleService productInterArticleService;
 
+    //상품을 생성할 때 태그와 글을 같이 저장
     public Product create(Member member, String subject, int price, String productTagsContents, List<Article> articles) {
         Product product = Product.builder()
                 .price(price)
@@ -28,7 +29,7 @@ public class ProductService {
 
         productRepository.save(product);
         productTagService.applyProductTags(product, productTagsContents);
-        productInterArticleService.applyArticles(product, articles);
+        productInterArticleService.saveArticles(product, articles);
         return product;
     }
 

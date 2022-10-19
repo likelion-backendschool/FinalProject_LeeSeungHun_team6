@@ -33,6 +33,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .nickname(nickname)
+                .authLevel(3)
                 .build();
 
         memberRepository.save(member);
@@ -75,6 +76,7 @@ public class MemberService {
         return member.getUsername();
     }
 
+    //등록된 아이디와 이메일인지, 동일한 계정인지 확인
     public Member enrolledUsernameAndEmail(String username, String email) {
         Member memberUsername = memberRepository.findByUsername(username).orElse(null);
         Member memberEmail = memberRepository.findByEmail(email).orElse(null);
@@ -84,6 +86,8 @@ public class MemberService {
         sendEmailRandomPassword(memberEmail);
         return memberUsername;
     }
+    
+    //패스워드 분실 시 임시 비밀번호 발급
     public void sendEmailRandomPassword(Member member){
         String randomPassword = Ut.randomPassword();
         member.setPassword(passwordEncoder.encode(randomPassword));

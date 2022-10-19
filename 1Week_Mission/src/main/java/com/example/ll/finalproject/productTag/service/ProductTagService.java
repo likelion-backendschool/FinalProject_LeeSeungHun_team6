@@ -24,6 +24,7 @@ public class ProductTagService {
         return productTagRepository.findAllByProductIdIn(ids);
     }
 
+    //상품에 해시태그를 적용
     public void applyProductTags(Product product, String productContents) {
         List<ProductTag> oldProductTags= getProductTags(product);
 
