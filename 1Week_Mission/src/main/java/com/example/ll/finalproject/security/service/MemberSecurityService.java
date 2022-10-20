@@ -23,7 +23,11 @@ public class MemberSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsername(username).get();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("member"));
+        if (member.getAuthLevel() == 3) {
+            authorities.add(new SimpleGrantedAuthority("member"));
+        } else if (member.getAuthLevel() == 7){
+            authorities.add(new SimpleGrantedAuthority("admin"));
+        }
         return new MemberContext(member,authorities);
     }
 }

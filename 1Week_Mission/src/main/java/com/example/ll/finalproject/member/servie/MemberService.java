@@ -78,13 +78,12 @@ public class MemberService {
 
     //등록된 아이디와 이메일인지, 동일한 계정인지 확인
     public Member enrolledUsernameAndEmail(String username, String email) {
-        Member memberUsername = memberRepository.findByUsername(username).orElse(null);
-        Member memberEmail = memberRepository.findByEmail(email).orElse(null);
-        if(memberUsername==null || memberEmail==null || !(memberUsername.equals(memberEmail))){
+        Member member = memberRepository.findByUsernameAndEmail(username,email).orElse(null);
+        if(member==null){
             return null;
         }
-        sendEmailRandomPassword(memberEmail);
-        return memberUsername;
+        sendEmailRandomPassword(member);
+        return member;
     }
     
     //패스워드 분실 시 임시 비밀번호 발급
