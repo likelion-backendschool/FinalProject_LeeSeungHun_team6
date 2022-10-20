@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,10 @@ public class MemberContext extends User {
     @Setter
     private String nickname;
 
+    @Getter
+    @Setter
+    private List<GrantedAuthority> authorities;
+
     public MemberContext(Member member, List<GrantedAuthority> authorities) {
         super(member.getUsername(), member.getPassword(), authorities);
         this.id = member.getId();
@@ -27,6 +32,7 @@ public class MemberContext extends User {
         this.username = member.getUsername();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
+        this.authorities = authorities;
     }
 
     public Member getMember() {
@@ -49,4 +55,5 @@ public class MemberContext extends User {
     public boolean memberIsNot(Member member) {
         return memberIs(member) == false;
     }
+
 }

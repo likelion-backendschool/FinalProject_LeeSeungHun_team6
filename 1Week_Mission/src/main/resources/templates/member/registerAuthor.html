@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>작가 등록</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>작가 등록</h1>
+            <script>
+                let AuthorRegister__submitDone = false;
+
+                function AuthorRegister__submit(form) {
+                    if (AuthorRegister__submitDone) {
+                        return;
+                    }
+                    form.nickname.value = form.nickname.value.trim();
+
+                    if (form.nickname.value.length == 0) {
+                        warningModal("닉네임을 입력해주세요.");
+                        form.nickname.focus();
+
+                        return;
+                    }
+                    form.submit();
+                    AuthorRegister__submitDone = true;
+                }
+            </script>
+            <form th:action method="POST" class="flex flex-col gap-3"
+                  onsubmit="AuthorRegister__submit(this); return false;">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">작가명</span>
+                    </label>
+                    <input type="text" name="nickname" placeholder="작가명" class="input input-bordered" maxlength="50">
+                </div>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input class="btn btn-primary" type="submit" value="등록">
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</main>
+
+</body>
+
+
+
+</html>

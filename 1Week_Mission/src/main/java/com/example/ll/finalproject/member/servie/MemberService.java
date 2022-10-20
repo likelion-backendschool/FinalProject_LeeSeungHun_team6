@@ -3,14 +3,18 @@ package com.example.ll.finalproject.member.servie;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.exception.AlreadyJoinException;
 import com.example.ll.finalproject.member.repository.MemberRepository;
+import com.example.ll.finalproject.security.dto.MemberContext;
 import com.example.ll.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -33,6 +37,22 @@ public class MemberService {
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .nickname(nickname)
+                .authLevel(4)
+                .build();
+
+        memberRepository.save(member);
+
+        return member;
+    }
+    public Member join(String username, String password, String email) {
+        if (memberRepository.findByUsername(username).isPresent()) {
+            throw new AlreadyJoinException();
+        }
+
+        Member member = Member.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .email(email)
                 .authLevel(3)
                 .build();
 
@@ -40,6 +60,7 @@ public class MemberService {
 
         return member;
     }
+
 
     @Transactional(readOnly = true)
     public Optional<Member> findByUsername(String username) {
@@ -101,6 +122,18 @@ public class MemberService {
 
     public Member findById(long id) {
         Member member = memberRepository.findById(id).orElse(null);
+        return member;
+    }
+
+    public Member registerAuthor(MemberContext memberContext, String nickname) {
+        Member member = memberRepository.findById(memberContext.getId()).orElse(null);
+        member.setNickname(nickname);
+        member.setAuthLevel(4);
+        List<GrantedAuthority> authorities = memberContext.getAuthorities();
+        authorities.remove(0);
+        authorities.add(new SimpleGrantedAuthority("author"));
+        memberContext.setAuthorities(authorities);
+        memberRepository.save(member);
         return member;
     }
 }

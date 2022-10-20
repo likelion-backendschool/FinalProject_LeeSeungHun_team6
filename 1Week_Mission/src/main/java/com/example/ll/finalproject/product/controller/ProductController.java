@@ -52,6 +52,9 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String showProductCreate(@AuthenticationPrincipal MemberContext memberContext, Model model) {
+        if(memberContext.getNickname()==null){
+            return "redirect:/member/registerAuthor?errorMsg=" + Ut.url.encode("작가명을 등록해주세요.");
+        }
         Member member = memberContext.getMember();
         List<Article> articles = articleService.findAllByMemberId(member.getId());
         model.addAttribute("articles",articles);

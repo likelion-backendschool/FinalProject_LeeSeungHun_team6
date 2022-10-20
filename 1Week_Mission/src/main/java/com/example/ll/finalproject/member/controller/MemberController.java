@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,7 +26,6 @@ import javax.validation.Valid;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -37,6 +37,26 @@ public class MemberController {
 
         return "member/login";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/registerAuthor")
+    public String registerAuthorView() {
+        return "member/registerAuthor";
+    }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/registerAuthor")
+    public String registerAuthor(@AuthenticationPrincipal MemberContext memberContext, String nickname) {
+        if(nickname.trim().length()==0){
+            return "redirect:/member/registerAuthor?errorMsg=" + Ut.url.encode("닉네임을 입력해주세요.");
+        }
+        Member member = memberService.registerAuthor(memberContext, nickname);
+        // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 시작
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println(memberContext.getAuthorities());
+        // 기존에 세션에 저장된 MemberContext 객체의 내용을 수정하는 코드 끝
+        return "redirect:/product/list?msg=" + Ut.url.encode("작가명이 등록되었습니다.");
+    }
+
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
@@ -47,7 +67,8 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) {
-        memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getEmail(), joinForm.getNickname());
+//        memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getEmail(), joinForm.getNickname());
+        memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getEmail());
 
         return "redirect:/member/login?msg=" + Ut.url.encode("회원가입이 완료되었습니다.");
     }

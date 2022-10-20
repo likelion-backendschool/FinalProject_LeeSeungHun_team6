@@ -12,7 +12,5 @@ public class JoinForm {
     private String password;
     @NotEmpty
     private String email;
-    @NotEmpty
-    private String nickname;
 
 }
