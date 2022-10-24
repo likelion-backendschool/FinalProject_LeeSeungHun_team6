@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +40,13 @@ public class CartService {
     @Transactional
     public void removeItem(CartItem cartItem) {
         cartItemRepository.delete(cartItem);
+    }
+
+    public Optional<CartItem> findItemById(long id) {
+        return cartItemRepository.findById(id);
+    }
+
+    public boolean actorCanDelete(Member buyer, CartItem cartItem) {
+        return buyer.getId().equals(cartItem.getBuyer().getId());
     }
 }
