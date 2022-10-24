@@ -25,7 +25,10 @@ public class CartController {
         Member buyer = memberContext.getMember();
 
         List<CartItem> items = cartService.getItemsByBuyer(buyer);
+        for(CartItem cartItem: items){
+            System.out.println(cartItem);
 
+        }
         model.addAttribute("items", items);
 
         return "cart/list";
