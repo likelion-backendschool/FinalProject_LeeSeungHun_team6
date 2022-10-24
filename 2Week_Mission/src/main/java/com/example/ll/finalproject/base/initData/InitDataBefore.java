@@ -3,18 +3,36 @@ package com.example.ll.finalproject.base.initData;
 
 import com.example.ll.finalproject.article.entity.Article;
 import com.example.ll.finalproject.article.service.ArticleService;
+import com.example.ll.finalproject.cart.entity.CartItem;
+import com.example.ll.finalproject.cart.service.CartService;
 import com.example.ll.finalproject.keyword.entity.Keyword;
 import com.example.ll.finalproject.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.servie.MemberService;
+import com.example.ll.finalproject.order.entity.Order;
+import com.example.ll.finalproject.order.service.OrderService;
 import com.example.ll.finalproject.product.entity.Product;
 import com.example.ll.finalproject.product.service.ProductService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public interface InitDataBefore {
-    default void before(MemberService memberService, ArticleService articleService, ProductService productService, KeywordService keywordService){
+    default void before(MemberService memberService, ArticleService articleService, ProductService productService, CartService cartService, OrderService orderService){
+        class Helper {
+            public Order order(Member member, List<Product> products) {
+                for (int i = 0; i < products.size(); i++) {
+                    Product product = products.get(i);
+
+                    cartService.addItem(member, product);
+                }
+
+                return orderService.createFromCart(member);
+            }
+        }
+        Helper helper = new Helper();
+
         String password = "1234";
         Member member1 = memberService.join("user1", password, "user1@test.com", "nickname1");
         Member member2 = memberService.join("user2", password, "user2@test.com", "nickname2");
@@ -23,13 +41,8 @@ public interface InitDataBefore {
 
         Article article1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>","#자바 #프로그래밍");
         Article article2 = articleService.write(member2, "제목2", "내용2", "<p>내용2</p>","#HTML #프로그래밍");
-        Article article3 = articleService.write(member3, "제목3", "내용3", "<p>내용3</p>","#자바 #프로그래밍");
-        Article article4 = articleService.write(member4, "제목4", "내용4", "<p>내용4</p>","#HTML #네트워크");
-        Article article5 = articleService.write(member1, "제목5", "내용5", "<p>내용5</p>","#자바 #DB");
-        Article article6 = articleService.write(member2, "제목6", "내용6", "<p>내용6</p>","#HTML #프로그래밍");
 
-//        Keyword keyword1 = keywordService.save("키워드1");
-//        Keyword keyword2 = keywordService.save("키워드2");
+
         List<Article> articleList = new ArrayList<>();
         articleList.add(article1);
         articleList.add(article2);
@@ -38,9 +51,49 @@ public interface InitDataBefore {
         Product product2 = productService.create(member1, "제목2", 4_000, "#자바2 #프로그래밍2", articleList);
         Product product3 = productService.create(member1, "제목3", 5_000, "#자바3 #프로그래밍3", articleList);
         Product product4 = productService.create(member1, "제목4", 6_000, "#자바4 #프로그래밍4", articleList);
-        Product product5 = productService.create(member1, "제목5", 7_000, "#자바5 #프로그래밍5", articleList);
+
+        CartItem cartItem1 = cartService.addItem(member1, product1);
+        CartItem cartItem2 = cartService.addItem(member1, product2);
+        CartItem cartItem3 = cartService.addItem(member2, product3);
+        CartItem cartItem4 = cartService.addItem(member2, product4);
+
+        memberService.addCash(member1, 10_000, "충전__무통장입금");
+        memberService.addCash(member1, 20_000, "충전__무통장입금");
+        memberService.addCash(member1, -5_000, "출금__일반");
+        memberService.addCash(member1, 1_000_000, "충전__무통장입금");
+        memberService.addCash(member2, 2_000_000, "충전__무통장입금");
+
+        // 1번 주문 : 결제완료
+        Order order1 = helper.order(member1, Arrays.asList(
+                        product1,
+                        product2
+                )
+        );
+
+        orderService.payByRestCashOnly(order1);
+
+        // 2번 주문 : 결제 후 환불
+        Order order2 = helper.order(member2, Arrays.asList(
+                        product3,
+                        product4
+                )
+        );
+
+        orderService.payByRestCashOnly(order2);
+
+        orderService.refund(order2);
 
 
+        // 3번 주문 : 결제 전
+        Order order3 = helper.order(member2, Arrays.asList(
+                        product1,
+                        product2
+                )
+        );
+        cartService.addItem(member1, product1);
+        cartService.addItem(member1, product2);
+        cartService.addItem(member1, product3);
 
+        cartService.addItem(member2, product4);
     }
 }

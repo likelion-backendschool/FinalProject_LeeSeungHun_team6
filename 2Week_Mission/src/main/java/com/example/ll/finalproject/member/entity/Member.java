@@ -25,6 +25,7 @@ public class Member extends BaseEntity {
     private String email;
     private String nickname;
     private int authLevel;
+    private long restCash;
     public Member(long id) {
         super(id);
     }
