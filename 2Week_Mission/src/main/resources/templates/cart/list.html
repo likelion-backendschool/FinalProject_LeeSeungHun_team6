@@ -32,8 +32,8 @@
                     <input type="hidden" name="ids">
                 </form>
 
-                <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">전체 주문하기</a>
-                <form method="POST" name="orderCartItemsForm" th:action="@{|/order/makeOrder|}" hidden>
+                <a href="javascript:;" onclick="OrderCartItemsForm__submit();" class="btn btn-primary btn-sm">주문하기</a>
+                <form method="POST" name="orderCartItemsForm" th:action="@{|/order/create|}" hidden>
                     <input type="hidden" name="ids">
                 </form>
 
