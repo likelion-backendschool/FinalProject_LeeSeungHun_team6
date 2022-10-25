@@ -90,6 +90,7 @@
 
                 <a th:if="${product.author.username==#authentication.principal.username}" th:href="@{|/product/${product.id}/modify|}" class="btn btn-sm btn-secondary">수정</a>
                 <a th:if="${product.author.username==#authentication.principal.username}" onclick="return confirm('정말로 삭제하시겠습니까?')" th:href="@{|/product/${product.id}/delete|}" class="btn btn-sm btn-secondary">삭제</a>
+
                 <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
             </div>
 

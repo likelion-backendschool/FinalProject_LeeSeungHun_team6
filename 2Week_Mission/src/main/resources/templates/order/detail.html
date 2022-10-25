@@ -67,7 +67,7 @@
                                    type="checkbox" class="ml-2 checkbox">
                         </label>
                     </div>
-                    <button th:if="${order.payable}" onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
+                    <button th:if="${order.payable}" onclick="payment();" class="btn btn-sm btn-primary">결제</button>
                     <span th:if="${order.isPaid}">결제완료</span>
                     <div>
                         <span>PG결제가격 : </span>

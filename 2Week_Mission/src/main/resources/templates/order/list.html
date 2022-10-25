@@ -12,18 +12,39 @@
             <h1>주문 리스트</h1>
             <div th:if="${not #strings.isEmpty(orders)}">
                 <table>
+                    <tr>
+                        <th>번호</th>
+                        <th>가격</th>
+                        <th>구매 날짜</th>
+                        <th>상품 목록</th>
+                        <th>기타</th>
+                    </tr>
                     <tr th:each="order : ${orders}">
-                        <td th:text="${order}" th:id="${order}"
-                            th:onclick="showDetailArticle(this.getAttribute('id'))"
+                        <td th:text="${order.id}" th:id="${order.id}"
+                            th:onclick="showDetailProduct(this.getAttribute('id'))"
                         ></td>
+                        <td th:text="${order.calculatePayPrice}" th:id="${order.id}"
+                            th:onclick="showDetailProduct(this.getAttribute('id'))"
+                        ></td>
+                        <td th:text="${order.modifyDate}" th:id="${order.id}"
+                            th:onclick="showDetailProduct(this.getAttribute('id'))"
+                        ></td>
+                        <div th:each="orderItem : ${order.orderItems}">
+                            <td th:text="${orderItem.product.subject}" th:id="${order.id}"
+                            ></td>
+                        </div>
+                        <td>
+                            <a class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
+                        </td>
+
                     </tr>
                 </table>
             </div>
 
-            <div class="grid grid-cols-2 mt-2 gap-2">
-                <a href="/post/write" class="btn btn-secondary btn-outline">글 등록</a>
-                <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
-            </div>
+<!--            <div class="grid grid-cols-2 mt-2 gap-2">-->
+<!--                <a href="/post/write" class="btn btn-secondary btn-outline">글 등록</a>-->
+<!--                <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>-->
+<!--            </div>-->
         </div>
 
     </section>

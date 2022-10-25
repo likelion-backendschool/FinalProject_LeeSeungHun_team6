@@ -9,6 +9,7 @@ import com.example.ll.finalproject.order.entity.Order;
 import com.example.ll.finalproject.order.entity.OrderItem;
 import com.example.ll.finalproject.order.exception.ActorCanNotPayOrderException;
 import com.example.ll.finalproject.order.exception.ActorCanNotSeeOrderException;
+import com.example.ll.finalproject.order.exception.OrderIdNotMatchedException;
 import com.example.ll.finalproject.order.service.OrderService;
 import com.example.ll.finalproject.product.entity.Product;
 import com.example.ll.finalproject.security.dto.MemberContext;
@@ -41,9 +42,9 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public String showOrder(@AuthenticationPrincipal MemberContext memberContext, Model model) {
         Member buyer = memberContext.getMember();
+        List<Order> orders = orderService.getOrderByBuyer(buyer);
 
-        Order order = orderService.getOrderByBuyer(buyer);
-        model.addAttribute("orders", order);
+        model.addAttribute("orders", orders);
 
         return "order/list";
     }
@@ -109,7 +110,28 @@ public class OrderController {
         msg = Ut.url.encode(msg);
         return "redirect:/product/list?msg=%s".formatted(msg);
     }
+    @GetMapping("/{id}/refund")
+    @PreAuthorize("isAuthenticated()")
+    public String refundOrder(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model) {
+        Order order = orderService.findForPrintById(id).get();
 
+        Member actor = memberContext.getMember();
+
+        if (orderService.actorCanSee(actor, order) == false) {
+            throw new OrderIdNotMatchedException();
+        }
+        String msg;
+        if(orderService.isTenMinute(order.getModifyDate())){
+            orderService.refund(order);
+            msg = "%d번 주문이 환불되었습니다.".formatted(order.getId());
+        }
+        else{
+            msg = "%d번 주문 환불 실패 *10분 이내만 환불 가능.".formatted(order.getId());
+        }
+        
+        msg = Ut.url.encode(msg);
+        return "redirect:/order/list?msg=%s".formatted(msg);
+    }
     //결제 처리
     @PostMapping("/{id}/pay")
     @PreAuthorize("isAuthenticated()")

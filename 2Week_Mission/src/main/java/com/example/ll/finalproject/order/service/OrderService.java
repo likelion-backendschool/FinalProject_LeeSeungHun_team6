@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,7 +94,7 @@ public class OrderService {
         memberService.addCash(order.getBuyer(), payPrice, "주문__%d__환불__예치금".formatted(order.getId()));
 
         order.setRefundDone();
-        orderRepository.save(order);
+        orderRepository.delete(order);
     }
 
     public Optional<Order> findForPrintById(long id) {
@@ -106,8 +108,12 @@ public class OrderService {
         return actor.getId().equals(order.getBuyer().getId());
     }
 
-    public Order getOrderByBuyer(Member buyer) {
-        return orderRepository.findAllByBuyerId(buyer.getId()).orElse(null);
+    public List<Order> getOrderByBuyer(Member buyer) {
+        List<Order> orders = orderRepository.findAllByBuyerId(buyer.getId());
+        if(orders==null){
+            return null;
+        }
+        return orders;
     }
 
     public void cancelOrder(Order order) {
@@ -118,4 +124,16 @@ public class OrderService {
         return actor.getId().equals(order.getBuyer().getId());
     }
 
+    
+    //10분 이내만 환불 가능
+    public boolean isTenMinute(LocalDateTime modifyDate) {
+        LocalDateTime nowTime = LocalDateTime.now();
+        Duration duration = Duration.between(modifyDate, nowTime);
+        long dif = duration.getSeconds();
+        System.out.println(dif+"초");
+        if(dif<=600){
+            return true;
+        }
+        return false;
+    }
 }
