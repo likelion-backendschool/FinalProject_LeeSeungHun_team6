@@ -180,7 +180,7 @@ public class OrderController {
         });
     }
 
-    private final String SECRET_KEY = "test_sk_5GePWvyJnrKW9ednl5ErgLzN97Eo";
+    private final String SECRET_KEY = "서버 키";
 
     @RequestMapping("/{id}/success")
     public String confirmPayment(
