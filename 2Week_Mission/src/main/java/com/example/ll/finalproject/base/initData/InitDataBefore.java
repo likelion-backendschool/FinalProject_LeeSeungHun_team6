@@ -9,6 +9,7 @@ import com.example.ll.finalproject.keyword.entity.Keyword;
 import com.example.ll.finalproject.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.servie.MemberService;
+import com.example.ll.finalproject.mybook.service.MyBookService;
 import com.example.ll.finalproject.order.entity.Order;
 import com.example.ll.finalproject.order.service.OrderService;
 import com.example.ll.finalproject.product.entity.Product;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface InitDataBefore {
-    default void before(MemberService memberService, ArticleService articleService, ProductService productService, CartService cartService, OrderService orderService){
+    default void before(MemberService memberService, ArticleService articleService, ProductService productService, CartService cartService, OrderService orderService, MyBookService myBookService){
         class Helper {
             public Order order(Member member, List<Product> products) {
                 for (int i = 0; i < products.size(); i++) {
@@ -52,6 +53,12 @@ public interface InitDataBefore {
         Product product3 = productService.create(member1, "제목3", 5_000, "#자바3 #프로그래밍3", articleList);
         Product product4 = productService.create(member1, "제목4", 6_000, "#자바4 #프로그래밍4", articleList);
 
+        myBookService.addProduct(member1, product1);
+        myBookService.addProduct(member1, product2);
+        myBookService.addProduct(member1, product3);
+        myBookService.addProduct(member1, product4);
+
+
         CartItem cartItem1 = cartService.addItem(member1, product1);
         CartItem cartItem2 = cartService.addItem(member1, product2);
         CartItem cartItem3 = cartService.addItem(member2, product3);
@@ -71,6 +78,10 @@ public interface InitDataBefore {
         );
 
         orderService.payByRestCashOnly(order1);
+        myBookService.addProduct(member1, Arrays.asList(
+                product1,
+                product2
+        ));
 
         // 2번 주문 : 결제 후 환불
         Order order2 = helper.order(member2, Arrays.asList(

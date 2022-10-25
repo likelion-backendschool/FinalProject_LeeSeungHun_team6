@@ -67,4 +67,7 @@ public class ProductService {
         return product;
     }
 
+    public List<Product> findAllByMemberId(long id) {
+        return productRepository.findAllByAuthorId(id);
+    }
 }

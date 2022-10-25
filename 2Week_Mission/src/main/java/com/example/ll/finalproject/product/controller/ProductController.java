@@ -9,6 +9,8 @@ import com.example.ll.finalproject.hashTag.service.HashTagService;
 import com.example.ll.finalproject.keyword.entity.Keyword;
 import com.example.ll.finalproject.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.member.entity.Member;
+import com.example.ll.finalproject.mybook.entity.MyBook;
+import com.example.ll.finalproject.mybook.service.MyBookService;
 import com.example.ll.finalproject.product.dto.request.ProductForm;
 import com.example.ll.finalproject.product.entity.Product;
 import com.example.ll.finalproject.product.service.ProductInterArticleService;
@@ -42,12 +44,24 @@ public class ProductController {
     private final ArticleService articleService;
 
     private final ProductInterArticleService productInterArticleService;
+    private final MyBookService myBookService;
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     public String showProductList(Model model, @AuthenticationPrincipal MemberContext memberContext) {
         List<Product> products = productService.getProducts();
         model.addAttribute("products", products);
         return "product/list";
+    }
+
+    //내가 작성하거나 구입한 도서목록
+    @GetMapping("/list/myProduct")
+    public String myProduct(@AuthenticationPrincipal MemberContext memberContext, Model model){
+        Member member = memberContext.getMember();
+
+        List<MyBook> myBooks = myBookService.findAllByMemberId(member.getId());
+
+        model.addAttribute("myBooks", myBooks);
+        return "product/myProduct";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -72,6 +86,7 @@ public class ProductController {
         List<Article> articles = articleService.getArticleById(productForm.getArticleId());
 
         Product product = productService.create(member, productForm.getSubject(), productForm.getPrice(), productForm.getProductTagContents(), articles);
+        myBookService.addProduct(member, product);
 
         String msg = "%d번 도서가 작성되었습니다.".formatted(product.getId());
         msg = Ut.url.encode(msg);

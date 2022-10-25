@@ -4,6 +4,7 @@ import com.example.ll.finalproject.cart.entity.CartItem;
 import com.example.ll.finalproject.cart.service.CartService;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.servie.MemberService;
+import com.example.ll.finalproject.mybook.service.MyBookService;
 import com.example.ll.finalproject.order.entity.Order;
 import com.example.ll.finalproject.order.entity.OrderItem;
 import com.example.ll.finalproject.order.exception.ActorCanNotPayOrderException;
@@ -34,6 +35,7 @@ public class OrderController {
 
     private final MemberService memberService;
     private final CartService cartService;
+    private final MyBookService mybookService;
 
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
@@ -123,6 +125,13 @@ public class OrderController {
         }
 
         orderService.payByRestCashOnly(order);
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        List<Product> products = new ArrayList<>();
+        for(OrderItem orderItem:orderItems){
+            products.add(orderItem.getProduct());
+        }
+        mybookService.addProduct(actor, products);
 
         return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("예치금으로 결제했습니다."));
     }

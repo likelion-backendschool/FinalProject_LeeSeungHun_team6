@@ -4,6 +4,7 @@ import com.example.ll.finalproject.article.service.ArticleService;
 import com.example.ll.finalproject.cart.service.CartService;
 import com.example.ll.finalproject.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.member.servie.MemberService;
+import com.example.ll.finalproject.mybook.service.MyBookService;
 import com.example.ll.finalproject.order.service.OrderService;
 import com.example.ll.finalproject.product.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
@@ -15,9 +16,9 @@ import org.springframework.context.annotation.Profile;
 @Profile("test")
 public class TestInitData implements InitDataBefore{
     @Bean
-    CommandLineRunner initData(MemberService memberService, ArticleService articleService, ProductService productService, CartService cartService, OrderService orderService) {
+    CommandLineRunner initData(MemberService memberService, ArticleService articleService, ProductService productService, CartService cartService, OrderService orderService, MyBookService myBookService) {
         return args -> {
-            before(memberService, articleService, productService, cartService, orderService);
+            before(memberService, articleService, productService, cartService, orderService, myBookService);
         };
     }
 }
