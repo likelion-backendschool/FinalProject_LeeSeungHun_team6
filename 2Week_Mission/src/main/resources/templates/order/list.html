@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>주문 리스트</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>주문 리스트</h1>
+            <div th:if="${not #strings.isEmpty(orders)}">
+                <table>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order}" th:id="${order}"
+                            th:onclick="showDetailArticle(this.getAttribute('id'))"
+                        ></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-2 mt-2 gap-2">
+                <a href="/post/write" class="btn btn-secondary btn-outline">글 등록</a>
+                <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>

@@ -33,7 +33,17 @@ public class OrderController {
 
     private final MemberService memberService;
     private final CartService cartService;
-    
+
+    @GetMapping("/list")
+    @PreAuthorize("isAuthenticated()")
+    public String showOrder(@AuthenticationPrincipal MemberContext memberContext, Model model) {
+        Member buyer = memberContext.getMember();
+
+        Order order = orderService.getOrderByBuyer(buyer);
+        model.addAttribute("orders", order);
+
+        return "order/list";
+    }
     
     
     //선택된 상품만 주문하기
@@ -80,4 +90,21 @@ public class OrderController {
 
         return "order/detail";
     }
+
+    @GetMapping("/{id}/cancel")
+    @PreAuthorize("isAuthenticated()")
+    public String cancelOrder(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model) {
+        Order order = orderService.findForPrintById(id).get();
+
+        Member actor = memberContext.getMember();
+
+        if (orderService.actorCanSee(actor, order) == false) {
+            throw new ActorCanNotSeeOrderException();
+        }
+        orderService.cancelOrder(order);
+        String msg = "%d번 주문이 삭제되었습니다.".formatted(order.getId());
+        msg = Ut.url.encode(msg);
+        return "redirect:/product/list?msg=%s".formatted(msg);
+    }
+
 }

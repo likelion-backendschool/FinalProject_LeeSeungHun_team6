@@ -105,4 +105,12 @@ public class OrderService {
     public boolean actorCanSee(Member actor, Order order) {
         return actor.getId().equals(order.getBuyer().getId());
     }
+
+    public Order getOrderByBuyer(Member buyer) {
+        return orderRepository.findAllByBuyerId(buyer.getId()).orElse(null);
+    }
+
+    public void cancelOrder(Order order) {
+        orderRepository.delete(order);
+    }
 }

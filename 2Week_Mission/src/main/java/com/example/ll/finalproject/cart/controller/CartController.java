@@ -38,7 +38,7 @@ public class CartController {
     }
     @GetMapping("/add/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String createItem(@AuthenticationPrincipal MemberContext memberContext, @PathVariable int id, Model model){
+    public String createItem(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model){
         Member buyer = memberContext.getMember();
         Product product = productService.findById(id);
         cartService.addItem(buyer, product);
