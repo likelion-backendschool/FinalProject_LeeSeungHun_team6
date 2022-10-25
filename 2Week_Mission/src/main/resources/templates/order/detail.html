@@ -16,7 +16,7 @@
         const orderPayPrice = /*[[ ${order.calculatePayPrice} ]]*/ null;
     </script>
 
-    <form hidden name="payByRestCashOnlyForm" method="POST" th:action="@{|/order/${order.id}/payByRestCashOnly|}">
+    <form hidden name="payByRestCashOnlyForm" method="POST" th:action="@{|/order/${order.id}/pay|}">
 
     </form>
     <section class="section section-join flex-grow flex flex-col items-center justify-center">

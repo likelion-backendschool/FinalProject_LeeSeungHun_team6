@@ -113,4 +113,9 @@ public class OrderService {
     public void cancelOrder(Order order) {
         orderRepository.delete(order);
     }
+
+    public boolean actorCanPayment(Member actor, Order order) {
+        return actor.getId().equals(order.getBuyer().getId());
+    }
+
 }

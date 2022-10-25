@@ -6,6 +6,7 @@ import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.servie.MemberService;
 import com.example.ll.finalproject.order.entity.Order;
 import com.example.ll.finalproject.order.entity.OrderItem;
+import com.example.ll.finalproject.order.exception.ActorCanNotPayOrderException;
 import com.example.ll.finalproject.order.exception.ActorCanNotSeeOrderException;
 import com.example.ll.finalproject.order.service.OrderService;
 import com.example.ll.finalproject.product.entity.Product;
@@ -105,6 +106,25 @@ public class OrderController {
         String msg = "%d번 주문이 삭제되었습니다.".formatted(order.getId());
         msg = Ut.url.encode(msg);
         return "redirect:/product/list?msg=%s".formatted(msg);
+    }
+
+    //결제 처리
+    @PostMapping("/{id}/pay")
+    @PreAuthorize("isAuthenticated()")
+    public String payByRestCashOnly(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id) {
+        Order order = orderService.findForPrintById(id).get();
+
+        Member actor = memberContext.getMember();
+
+        long restCash = memberService.getRestCash(actor);
+
+        if (orderService.actorCanPayment(actor, order) == false) {
+            throw new ActorCanNotPayOrderException();
+        }
+
+        orderService.payByRestCashOnly(order);
+
+        return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("예치금으로 결제했습니다."));
     }
 
 }
