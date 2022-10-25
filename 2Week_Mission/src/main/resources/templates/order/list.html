@@ -16,27 +16,26 @@
                         <th>번호</th>
                         <th>가격</th>
                         <th>구매 날짜</th>
+                        <th>제목</th>
+                        <th>환불</th>
                         <th>상품 목록</th>
-                        <th>기타</th>
                     </tr>
                     <tr th:each="order : ${orders}">
                         <td th:text="${order.id}" th:id="${order.id}"
-                            th:onclick="showDetailProduct(this.getAttribute('id'))"
                         ></td>
                         <td th:text="${order.calculatePayPrice}" th:id="${order.id}"
-                            th:onclick="showDetailProduct(this.getAttribute('id'))"
                         ></td>
                         <td th:text="${order.modifyDate}" th:id="${order.id}"
-                            th:onclick="showDetailProduct(this.getAttribute('id'))"
                         ></td>
-                        <div th:each="orderItem : ${order.orderItems}">
-                            <td th:text="${orderItem.product.subject}" th:id="${order.id}"
-                            ></td>
-                        </div>
+                        <td th:text="${order.name}" th:id="${order.id}"
+                        ></td>
                         <td>
-                            <a class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
+                            <a onclick="return confirm('정말로 삭제하시겠습니까?')" class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
                         </td>
-
+                        <td th:each="orderItem : ${order.orderItems}">
+                            <div th:text="${orderItem.product.subject}" th:id="${order.id}"
+                            ></div>
+                        </td>
                     </tr>
                 </table>
             </div>
