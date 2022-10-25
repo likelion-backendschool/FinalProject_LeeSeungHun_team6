@@ -3,6 +3,8 @@ package com.example.ll.finalproject.cart.controller;
 import com.example.ll.finalproject.cart.entity.CartItem;
 import com.example.ll.finalproject.cart.service.CartService;
 import com.example.ll.finalproject.member.entity.Member;
+import com.example.ll.finalproject.product.entity.Product;
+import com.example.ll.finalproject.product.service.ProductService;
 import com.example.ll.finalproject.security.dto.MemberContext;
 import com.example.ll.finalproject.util.Ut;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
+    private final ProductService productService;
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     public String showItems(@AuthenticationPrincipal MemberContext memberContext, Model model) {
@@ -31,6 +35,14 @@ public class CartController {
         model.addAttribute("items", items);
 
         return "cart/list";
+    }
+    @GetMapping("/add/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String createItem(@AuthenticationPrincipal MemberContext memberContext, @PathVariable int id, Model model){
+        Member buyer = memberContext.getMember();
+        Product product = productService.findById(id);
+        cartService.addItem(buyer, product);
+        return "redirect:/product/list?msg=" + Ut.url.encode("%d건의 품목을 추가되었습니다.".formatted(1));
     }
 
     //카트에 담겨진 id들을 도려냄

@@ -43,7 +43,8 @@ public class ProductController {
 
     private final ProductInterArticleService productInterArticleService;
     @GetMapping("/list")
-    public String showProductList(Model model) {
+    @PreAuthorize("isAuthenticated()")
+    public String showProductList(Model model, @AuthenticationPrincipal MemberContext memberContext) {
         List<Product> products = productService.getProducts();
         model.addAttribute("products", products);
         return "product/list";

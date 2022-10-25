@@ -18,6 +18,7 @@
                     <th>가격</th>
                     <th>작성자 </th>
                     <th>작성 날짜</th>
+                    <th>장바구니</th>
                 </tr>
                 <tr th:each="product : ${products}">
                     <td th:text="${product.id}" th:id="${product.id}"
@@ -31,6 +32,8 @@
                         th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
                     <td th:text="${product.createDate}" th:id="${product.id}"
                         th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
+                    <td th:id="${product.id}"
+                        th:onclick="addCart(this.getAttribute('id'))" class="btn btn-secondary btn-outline">담기</td>
                 </tr>
             </table>
             <div class="grid grid-cols-2 mt-2 gap-2">
