@@ -38,7 +38,6 @@ public interface InitDataBefore {
         Member member1 = memberService.join("user1", password, "user1@test.com", "nickname1");
         Member member2 = memberService.join("user2", password, "user2@test.com", "nickname2");
         Member member3 = memberService.join("user3", password, "user3@test.com", "nickname3");
-        Member member4 = memberService.join("user4", password, "user4@test.com", "nickname4");
 
         Article article1 = articleService.write(member1, "제목1", "내용1", "<p>내용1</p>","#자바 #프로그래밍");
         Article article2 = articleService.write(member2, "제목2", "내용2", "<p>내용2</p>","#HTML #프로그래밍");
@@ -48,21 +47,16 @@ public interface InitDataBefore {
         articleList.add(article1);
         articleList.add(article2);
 
-        Product product1 = productService.create(member1, "제목1", 2_000, "#자바1 #프로그래밍1", articleList);
-        Product product2 = productService.create(member1, "제목2", 4_000, "#자바2 #프로그래밍2", articleList);
-        Product product3 = productService.create(member1, "제목3", 5_000, "#자바3 #프로그래밍3", articleList);
-        Product product4 = productService.create(member1, "제목4", 6_000, "#자바4 #프로그래밍4", articleList);
+        Product product1 = productService.create(member3, "제목1", 2_000, "#자바1 #프로그래밍1", articleList);
+        Product product2 = productService.create(member3, "제목2", 4_000, "#자바2 #프로그래밍2", articleList);
+        Product product3 = productService.create(member3, "제목3", 5_000, "#자바3 #프로그래밍3", articleList);
+        Product product4 = productService.create(member3, "제목4", 6_000, "#자바4 #프로그래밍4", articleList);
 
-        myBookService.addProduct(member1, product1);
-        myBookService.addProduct(member1, product2);
-        myBookService.addProduct(member1, product3);
-        myBookService.addProduct(member1, product4);
+//        myBookService.addProduct(member1, product1);
+//        myBookService.addProduct(member1, product2);
+//        myBookService.addProduct(member1, product3);
+//        myBookService.addProduct(member1, product4);
 
-
-        CartItem cartItem1 = cartService.addItem(member1, product1);
-        CartItem cartItem2 = cartService.addItem(member1, product2);
-        CartItem cartItem3 = cartService.addItem(member2, product3);
-        CartItem cartItem4 = cartService.addItem(member2, product4);
 
         memberService.addCash(member1, 10_000, "충전__무통장입금");
         memberService.addCash(member1, 20_000, "충전__무통장입금");
@@ -101,10 +95,6 @@ public interface InitDataBefore {
                         product2
                 )
         );
-        cartService.addItem(member1, product1);
-        cartService.addItem(member1, product2);
-        cartService.addItem(member1, product3);
 
-        cartService.addItem(member2, product4);
     }
 }

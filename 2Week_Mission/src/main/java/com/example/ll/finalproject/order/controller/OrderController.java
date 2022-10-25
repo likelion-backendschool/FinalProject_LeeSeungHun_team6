@@ -128,7 +128,7 @@ public class OrderController {
         else{
             msg = "%d번 주문 환불 실패 *10분 이내만 환불 가능.".formatted(order.getId());
         }
-        
+
         msg = Ut.url.encode(msg);
         return "redirect:/order/list?msg=%s".formatted(msg);
     }

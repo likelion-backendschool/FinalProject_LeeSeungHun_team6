@@ -97,6 +97,12 @@
                     도서 목록
                 </span>
             </a>
+            <a href="/order/list" class="inline-flex" sec:authorize="isAuthenticated()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span class="ml-[2px] hidden sm:block">
+                    주문 목록
+                </span>
+            </a>
             <a href="/cart/list" class="inline-flex" sec:authorize="isAuthenticated()">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span class="ml-[2px] hidden sm:block">

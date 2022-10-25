@@ -41,6 +41,12 @@ public class CartController {
     public String createItem(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model){
         Member buyer = memberContext.getMember();
         Product product = productService.findById(id);
+        if(product.getAuthor().getId()==buyer.getId()){
+            return "redirect:/product/list?errorMsg=" + Ut.url.encode("나의 도서는 담을 수 없습니다.");
+        }
+        if(cartService.isExisted(id)){
+            return "redirect:/product/list?errorMsg=" + Ut.url.encode("이미 장바구니에 추가되었습니다.");
+        }
         cartService.addItem(buyer, product);
         return "redirect:/product/list?msg=" + Ut.url.encode("%d건의 품목을 추가되었습니다.".formatted(1));
     }

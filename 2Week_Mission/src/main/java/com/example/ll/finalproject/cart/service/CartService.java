@@ -49,4 +49,12 @@ public class CartService {
     public boolean actorCanDelete(Member buyer, CartItem cartItem) {
         return buyer.getId().equals(cartItem.getBuyer().getId());
     }
+
+    public boolean isExisted(long id) {
+        CartItem cartItem = cartItemRepository.findByProductId(id).orElse(null);
+        if(cartItem==null){
+            return false;
+        }
+        return true;
+    }
 }
