@@ -229,6 +229,7 @@ public class OrderController {
             return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("결제가 완료되었습니다."));
         } else {
             JsonNode failNode = responseEntity.getBody();
+            model.addAttribute("order",order);
             model.addAttribute("message", failNode.get("message").asText());
             model.addAttribute("code", failNode.get("code").asText());
             return "order/fail";
@@ -236,7 +237,9 @@ public class OrderController {
     }
 
     @RequestMapping("/{id}/fail")
-    public String failPayment(@RequestParam String message, @RequestParam String code, Model model) {
+    public String failPayment(@RequestParam String message, @RequestParam String code, Model model,@PathVariable long id) {
+        Order order = orderService.findForPrintById(id).orElse(null);
+        model.addAttribute("order",order);
         model.addAttribute("message", message);
         model.addAttribute("code", code);
         return "order/fail";
