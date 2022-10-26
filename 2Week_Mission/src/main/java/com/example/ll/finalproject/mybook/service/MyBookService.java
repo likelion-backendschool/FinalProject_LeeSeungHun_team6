@@ -17,7 +17,7 @@ public class MyBookService {
     public void addProduct(Member actor, List<Product> products) {
         for(Product product:products){
             //매번 시도 안좋음 리팩토링**
-            MyBook myBook = myBookRepository.findByMemberIdAndProductId(actor.getId(), product.getId());
+            MyBook myBook = myBookRepository.findByMemberIdAndProductId(actor.getId(), product.getId()).orElse(null);
 
             if(myBook==null){
                 myBook = MyBook.builder()
@@ -35,7 +35,7 @@ public class MyBookService {
 
     public void addProduct(Member member, Product product){
         //기존에 있는 상품인지 체크
-        MyBook myBook = myBookRepository.findByMemberIdAndProductId(member.getId(), product.getId());
+        MyBook myBook = myBookRepository.findByMemberIdAndProductId(member.getId(), product.getId()).orElse(null);
         if(myBook==null){
             myBook = MyBook.builder()
                     .product(product)
@@ -55,5 +55,13 @@ public class MyBookService {
             return null;
         }
         return myBooks;
+    }
+
+    public boolean isExisted(Member member, Product product) {
+        MyBook myBook = myBookRepository.findByMemberIdAndProductId(member.getId(),product.getId()).orElse(null);
+        if(myBook==null){
+            return false;
+        }
+        return true;
     }
 }

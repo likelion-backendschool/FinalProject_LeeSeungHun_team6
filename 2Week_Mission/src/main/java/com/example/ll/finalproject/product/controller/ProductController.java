@@ -13,6 +13,7 @@ import com.example.ll.finalproject.mybook.entity.MyBook;
 import com.example.ll.finalproject.mybook.service.MyBookService;
 import com.example.ll.finalproject.product.dto.request.ProductForm;
 import com.example.ll.finalproject.product.entity.Product;
+import com.example.ll.finalproject.product.exception.ActorCanNotSeeProductDetail;
 import com.example.ll.finalproject.product.service.ProductInterArticleService;
 import com.example.ll.finalproject.product.service.ProductService;
 import com.example.ll.finalproject.security.dto.MemberContext;
@@ -95,8 +96,13 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public String showProductDetail(Model model, @PathVariable Long id) {
+    public String showProductDetail(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id) {
+        Member member = memberContext.getMember();
+        //자신의 상품만 글 확인 가능
         Product product = productService.getLoadForPrintProduct(id);
+        if(!myBookService.isExisted(member,product)){
+            throw new ActorCanNotSeeProductDetail();
+        }
         List<Article> articles = productInterArticleService.getProductInterArticle(id);
         model.addAttribute("product", product);
         model.addAttribute("articles", articles);

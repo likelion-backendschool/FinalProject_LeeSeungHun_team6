@@ -10,5 +10,5 @@ public interface MyBookRepository extends JpaRepository<MyBook, Long> {
 
     List<MyBook> findAllByMemberId(Long id);
 
-    MyBook findByMemberIdAndProductId(Long id, Long id1);
+    Optional<MyBook> findByMemberIdAndProductId(Long id, Long id1);
 }

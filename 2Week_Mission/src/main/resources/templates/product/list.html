@@ -21,16 +21,16 @@
                 </tr>
                 <tr th:each="product : ${products}">
                     <td th:text="${product.id}" th:id="${product.id}"
-                        th:onclick="showDetailProduct(this.getAttribute('id'))"
                     ></td>
-                    <td th:text="${product.subject}" th:id="${product.id}"
-                        th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
+                    <td th:text="${product.subject}" th:id="${product.id}">
+
+                    </td>
                     <td th:text="${product.price}" th:id="${product.id}"
-                        th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
+                        ></td>
                     <td th:text="${product.author.nickname}" th:id="${product.id}"
-                        th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
+                        ></td>
                     <td th:text="${product.createDate}" th:id="${product.id}"
-                        th:onclick="showDetailProduct(this.getAttribute('id'))"></td>
+                        ></td>
                     <td th:id="${product.id}"
                         th:onclick="addCart(this.getAttribute('id'))" class="btn btn-secondary btn-outline">담기</td>
                 </tr>
