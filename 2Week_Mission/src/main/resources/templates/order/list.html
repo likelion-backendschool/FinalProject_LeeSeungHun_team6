@@ -34,7 +34,7 @@
                             th:onclick="showDetailOrder(this.getAttribute('id'))"
                         ></td>
                         <td th:if="${!order.payable}">
-                            <a onclick="return confirm('정말로 삭제하시겠습니까?')" class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
+                            <a onclick="return confirm('정말로 환불하시겠습니까?')" class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
                         </td>
                         <td th:if="${order.payable}">
                             <a class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}|}">결제</a>

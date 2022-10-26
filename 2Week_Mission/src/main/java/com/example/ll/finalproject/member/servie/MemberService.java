@@ -171,4 +171,6 @@ public class MemberService {
         CashLog cashLog;
         long newRestCash;
     }
+
+
 }

@@ -37,6 +37,6 @@ out/
 .vscode/
 
 ##setting##
-application-base-addi.yml
+application-apikey.yml
 /.env
 .env

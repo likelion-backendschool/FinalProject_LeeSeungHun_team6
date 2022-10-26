@@ -9,6 +9,8 @@ import com.example.ll.finalproject.order.entity.OrderItem;
 import com.example.ll.finalproject.order.repository.OrderRepository;
 import com.example.ll.finalproject.product.entity.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@PropertySource("classpath:application-apikey.yml")
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,6 +27,13 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final MemberService memberService;
+
+    @Value("${payment_serverKey}")
+    private String SECRET_KEY;
+
+    public String getSECRET_KEY(){
+        return SECRET_KEY;
+    }
     @Transactional
     public Order createFromCart(Member buyer) {
 
@@ -153,4 +162,5 @@ public class OrderService {
         order.setPaymentDone();
         orderRepository.save(order);
     }
+
 }

@@ -18,6 +18,8 @@ import com.example.ll.finalproject.util.Ut;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -179,8 +181,7 @@ public class OrderController {
             }
         });
     }
-
-    private final String SECRET_KEY = "서버 키";
+    private String SECRET_KEY = "";
 
     @RequestMapping("/{id}/success")
     public String confirmPayment(
@@ -199,7 +200,7 @@ public class OrderController {
         if (id != orderIdInputed) {
             throw new OrderIdNotMatchedException();
         }
-
+        SECRET_KEY = orderService.getSECRET_KEY();
         HttpHeaders headers = new HttpHeaders();
         // headers.setBasicAuth(SECRET_KEY, ""); // spring framework 5.2 이상 버전에서 지원
         headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
