@@ -4,7 +4,6 @@ import com.example.ll.finalproject.base.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +24,11 @@ public class Member extends BaseEntity {
     private String email;
     private String nickname;
     private int authLevel;
+    private long restCash;
     public Member(long id) {
         super(id);
+    }
+    public String getName() {
+        return username;
     }
 }

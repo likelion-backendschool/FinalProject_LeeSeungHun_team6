@@ -1,12 +1,14 @@
 package com.example.ll.finalproject.product.service;
 
 import com.example.ll.finalproject.article.entity.Article;
+import com.example.ll.finalproject.cart.service.CartService;
 import com.example.ll.finalproject.hashTag.entity.HashTag;
 import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.product.entity.Product;
 import com.example.ll.finalproject.product.repository.ProductRepository;
 import com.example.ll.finalproject.productTag.entity.ProductTag;
 import com.example.ll.finalproject.productTag.service.ProductTagService;
+import com.example.ll.finalproject.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductTagService productTagService;
+    private final CartService cartService;
     private final ProductInterArticleService productInterArticleService;
 
     //상품을 생성할 때 태그와 글을 같이 저장
@@ -62,5 +65,9 @@ public class ProductService {
         Product product = productRepository.findById(id).orElse(null);
         loadForPrintProduct(product);
         return product;
+    }
+
+    public List<Product> findAllByMemberId(long id) {
+        return productRepository.findAllByAuthorId(id);
     }
 }
