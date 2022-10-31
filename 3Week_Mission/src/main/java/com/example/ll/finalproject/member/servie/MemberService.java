@@ -158,7 +158,7 @@ public class MemberService {
         member.setAuthLevel(4);
         List<GrantedAuthority> authorities = memberContext.getAuthorities();
         authorities.remove(0);
-        authorities.add(new SimpleGrantedAuthority("author"));
+        authorities.add(new SimpleGrantedAuthority("AUTHOR"));
         memberContext.setAuthorities(authorities);
         memberContext.setNickname(member.getNickname());
         memberRepository.save(member);

@@ -62,13 +62,13 @@
         </a>
 
         <div class="flex gap-4">
-            <a href="/adm/home/main" class="inline-flex" sec:authorize="hasAuthority('ADMIN')">
+            <a href="/adm/rebate/adminHome" class="inline-flex" sec:authorize="hasAuthority('ADMIN')">
                 <i class="fa-solid fa-gauge-high"></i>
                 <span class="ml-[2px] hidden sm:block">
                     관리자 홈
                 </span>
             </a>
-            <a href="/member/registerAuthor" class="inline-flex" sec:authorize="hasAuthority('member')">
+            <a href="/member/registerAuthor" class="inline-flex" sec:authorize="hasAuthority('MEMBER')">
                 <i class="fa-solid fa-gauge-high"></i>
                 <span class="ml-[2px] hidden sm:block">
                     작가등록
@@ -93,7 +93,7 @@
                     글 목록
                 </span>
             </a>
-            <a href="/product/list" class="inline-flex" sec:authorize="hasAuthority('author')">
+            <a href="/product/list" class="inline-flex" sec:authorize="!hasAuthority('MEMBER')">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 <span class="ml-[2px] hidden sm:block">
                     도서 목록

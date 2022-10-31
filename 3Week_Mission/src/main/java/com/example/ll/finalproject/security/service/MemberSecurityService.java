@@ -24,11 +24,11 @@ public class MemberSecurityService implements UserDetailsService {
         Member member = memberRepository.findByUsername(username).get();
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (member.getAuthLevel() == 3) {
-            authorities.add(new SimpleGrantedAuthority("member"));
+            authorities.add(new SimpleGrantedAuthority("MEMBER"));
         }else if (member.getAuthLevel() == 4){
-            authorities.add(new SimpleGrantedAuthority("author"));
+            authorities.add(new SimpleGrantedAuthority("AUTHOR"));
         } else if (member.getAuthLevel() == 7){
-            authorities.add(new SimpleGrantedAuthority("admin"));
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
         }
         return new MemberContext(member,authorities);
     }
