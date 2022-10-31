@@ -46,7 +46,7 @@ public class MemberService {
                 .authLevel(4)
                 .build();
 
-        memberRepository.save(member);
+        join(member);
 
         return member;
     }
@@ -62,9 +62,30 @@ public class MemberService {
                 .authLevel(3)
                 .build();
 
-        memberRepository.save(member);
+        join(member);
 
         return member;
+    }
+    public Member adminJoin(String username, String password, String email, String nickname) {
+        if (memberRepository.findByUsername(username).isPresent()) {
+            throw new AlreadyJoinException();
+        }
+
+        Member member = Member.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .email(email)
+                .nickname(nickname)
+                .authLevel(7)
+                .build();
+
+        join(member);
+
+        return member;
+    }
+
+    public void join(Member member){
+        memberRepository.save(member);
     }
 
 
@@ -164,6 +185,7 @@ public class MemberService {
 
         return foundMember.getRestCash();
     }
+
 
     @Data
     @AllArgsConstructor
