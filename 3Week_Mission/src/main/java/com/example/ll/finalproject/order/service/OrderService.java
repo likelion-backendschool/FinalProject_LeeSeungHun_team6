@@ -103,7 +103,7 @@ public class OrderService {
         memberService.addCash(order.getBuyer(), payPrice, "주문__%d__환불__예치금".formatted(order.getId()));
 
         order.setRefundDone();
-        orderRepository.delete(order);
+        orderRepository.save(order);
     }
 
     public Optional<Order> findForPrintById(long id) {
@@ -118,7 +118,7 @@ public class OrderService {
     }
 
     public List<Order> getOrderByBuyer(Member buyer) {
-        List<Order> orders = orderRepository.findAllByBuyerId(buyer.getId());
+        List<Order> orders = orderRepository.findAllByBuyerIdAndIsRefunded(buyer.getId(), false);
         if(orders==null){
             return null;
         }

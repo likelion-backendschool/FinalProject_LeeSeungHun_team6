@@ -9,4 +9,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findAllByBuyerId(Long id);
+
+
+    List<Order> findAllByBuyerIdAndIsRefunded(Long id, boolean b);
 }
