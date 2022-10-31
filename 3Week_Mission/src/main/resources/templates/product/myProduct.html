@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>내 도서</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>나의 도서 리스트</h1>
+            <table>
+                <tr>
+                    <th>번호</th>
+                    <th>상품명</th>
+                    <th>가격</th>
+                    <th>작성자 </th>
+                    <th>작성 날짜</th>
+                    <th>수량</th>
+                </tr>
+                <tr th:each="myBook : ${myBooks}">
+                    <td th:text="${myBook.product.id}" th:id="${myBook.product.id}"
+                        th:onclick="showDetailProduct(this.getAttribute('id'))"
+                    ></td>
+                    <td th:text="${myBook.product.subject}" th:id="${myBook.product.id}"
+                        th:onclick="showDetailProduct(this.getAttribute('id'))"
+                    ></td>
+                    <td th:text="${myBook.product.price}" th:id="${myBook.product.id}"
+                        th:onclick="showDetailProduct(this.getAttribute('id'))"
+                    ></td>
+                    <td th:text="${myBook.product.author.nickname}" th:id="${myBook.product.id}"
+                        th:onclick="showDetailProduct(this.getAttribute('id'))"
+                    ></td>
+                    <td th:text="${myBook.product.createDate}" th:id="${myBook.product.id}"
+                        th:onclick="showDetailProduct(this.getAttribute('id'))"
+                    ></td>
+                    <td th:text="${myBook.number}" th:id="${myBook.product.id}"
+                    ></td>
+
+
+                </tr>
+            </table>
+            <div class="grid grid-cols-2 mt-2 gap-2">
+                <a href="/product/list" class="btn btn-secondary btn-outline">전체 도서</a>
+                <a href="/product/create" class="btn btn-secondary btn-outline">도서등록</a>
+
+                <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>
