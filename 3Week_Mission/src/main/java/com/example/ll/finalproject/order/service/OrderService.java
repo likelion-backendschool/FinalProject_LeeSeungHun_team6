@@ -6,6 +6,7 @@ import com.example.ll.finalproject.member.entity.Member;
 import com.example.ll.finalproject.member.servie.MemberService;
 import com.example.ll.finalproject.order.entity.Order;
 import com.example.ll.finalproject.order.entity.OrderItem;
+import com.example.ll.finalproject.order.repository.OrderItemRepository;
 import com.example.ll.finalproject.order.repository.OrderRepository;
 import com.example.ll.finalproject.product.entity.Product;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final MemberService memberService;
+
+    private final OrderItemRepository orderItemRepository;
 
     @Value("${payment_serverKey}")
     private String SECRET_KEY;
@@ -163,4 +166,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<OrderItem> findAllByPayDateBetweenOrderByIdAsc(LocalDateTime fromDate, LocalDateTime toDate) {
+        return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
+    }
 }

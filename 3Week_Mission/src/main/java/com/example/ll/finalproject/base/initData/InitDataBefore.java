@@ -53,11 +53,6 @@ public interface InitDataBefore {
         Product product3 = productService.create(member3, "제목3", 5_000, "#자바3 #프로그래밍3", articleList);
         Product product4 = productService.create(member3, "제목4", 6_000, "#자바4 #프로그래밍4", articleList);
 
-//        myBookService.addProduct(member1, product1);
-//        myBookService.addProduct(member1, product2);
-//        myBookService.addProduct(member1, product3);
-//        myBookService.addProduct(member1, product4);
-
 
         memberService.addCash(member1, 10_000, "충전__무통장입금");
         memberService.addCash(member1, 20_000, "충전__무통장입금");

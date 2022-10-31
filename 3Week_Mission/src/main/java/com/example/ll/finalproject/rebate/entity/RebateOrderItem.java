@@ -102,5 +102,25 @@ public class RebateOrderItem extends BaseEntity {
         seller = orderItem.getProduct().getAuthor();
         sellerName = orderItem.getProduct().getAuthor().getName();
     }
+    public int calculateRebatePrice() {
+        if (refundPrice > 0) {
+            return 0;
+        }
+
+        return payPrice - pgFee - wholesalePrice;
+    }
+
+    public boolean isRebateAvailable() {
+        if (refundPrice > 0 || rebateDate != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void setRebateDone(long cashLogId) {
+        rebateDate = LocalDateTime.now();
+        this.rebateCashLog = new CashLog(cashLogId);
+    }
 
 }
