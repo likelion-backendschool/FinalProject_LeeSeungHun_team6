@@ -87,7 +87,7 @@
                         const $checked = $('.orderItemCheckbox:checked');
 
                         if ( $checked.length == 0 ) {
-                            alert('정산할 주문품목을 선택해주세요.');
+                            warningModal("정산할 주문 품목을 선택해주세요.");
                             return;
                         }
                         const ids = $checked.map((index, el) => $(el).val()).get();

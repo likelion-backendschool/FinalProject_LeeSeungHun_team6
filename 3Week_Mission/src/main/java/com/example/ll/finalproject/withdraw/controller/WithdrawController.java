@@ -5,6 +5,7 @@ import com.example.ll.finalproject.member.servie.MemberService;
 import com.example.ll.finalproject.security.dto.MemberContext;
 import com.example.ll.finalproject.util.Ut;
 import com.example.ll.finalproject.withdraw.dto.request.WithdrawForm;
+import com.example.ll.finalproject.withdraw.entity.Withdraw;
 import com.example.ll.finalproject.withdraw.service.WithdrawService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,4 +49,15 @@ public class WithdrawController {
 
         return "redirect:/member/modify?msg=%s".formatted(Ut.url.encode("출금 신청이 완료되었습니다."));
     }
+
+    @GetMapping("/adm/withdraw/applyList")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String showWithdrawList(Model model){
+
+        List<Withdraw> withdraws = withdrawService.findAllApplyList();
+
+        model.addAttribute("withdraws", withdraws);
+        return "withdraw/applyList";
+    }
+    
 }
