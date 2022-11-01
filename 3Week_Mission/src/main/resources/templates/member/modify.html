@@ -70,6 +70,13 @@
                     <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">뒤로 가기</button>
                 </div>
                 <br/>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">현재 예치금</span>
+                    </label>
+                    <input autofocus type="text" placeholder="현재 예치금" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.restCash}">
+                </div>
                 <div class="grid grid-cols-2 mt-2 gap-2">
                     <a href="/member/charge" class="btn btn-secondary btn-outline">입금 신청</a>
                     <a href="/withdraw/apply" class="btn btn-secondary btn-outline">출금 신청</a>

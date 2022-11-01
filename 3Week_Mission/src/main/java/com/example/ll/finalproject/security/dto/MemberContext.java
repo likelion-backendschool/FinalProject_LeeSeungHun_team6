@@ -21,6 +21,9 @@ public class MemberContext extends User {
     @Setter
     private String nickname;
 
+    @Setter
+    private long restCash;
+
     @Getter
     @Setter
     private List<GrantedAuthority> authorities;
@@ -32,6 +35,7 @@ public class MemberContext extends User {
         this.username = member.getUsername();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
+        this.restCash = member.getRestCash();
         this.authorities = authorities;
     }
 
@@ -43,6 +47,7 @@ public class MemberContext extends User {
                 .username(username)
                 .email(email)
                 .nickname(nickname)
+                .restCash(restCash)
                 .build();
     }
 

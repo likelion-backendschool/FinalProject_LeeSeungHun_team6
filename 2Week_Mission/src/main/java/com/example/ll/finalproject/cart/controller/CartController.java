@@ -41,6 +41,9 @@ public class CartController {
     public String createItem(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model){
         Member buyer = memberContext.getMember();
         Product product = productService.findById(id);
+        /*
+        * 나의 도서는 장바구니에 담을 수 없으며 이미 장바구니 추가된 도서는 담을 수 없다.
+        */
         if(product.getAuthor().getId()==buyer.getId()){
             return "redirect:/product/list?errorMsg=" + Ut.url.encode("나의 도서는 담을 수 없습니다.");
         }
@@ -51,12 +54,11 @@ public class CartController {
         return "redirect:/product/list?msg=" + Ut.url.encode("%d건의 품목을 추가되었습니다.".formatted(1));
     }
 
-    //카트에 담겨진 id들을 도려냄
     @PostMapping("/removeItems")
     @PreAuthorize("isAuthenticated()")
     public String removeItems(@AuthenticationPrincipal MemberContext memberContext, String ids) {
         Member buyer = memberContext.getMember();
-
+        //카트에 담겨진 id들을 도려냄
         String[] idsArr = ids.split(",");
 
         Arrays.stream(idsArr)

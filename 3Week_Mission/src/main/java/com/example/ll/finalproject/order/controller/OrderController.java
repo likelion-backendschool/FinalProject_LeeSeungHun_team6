@@ -21,7 +21,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -246,6 +249,48 @@ public class OrderController {
         } else {
             JsonNode failNode = responseEntity.getBody();
             model.addAttribute("order",order);
+            model.addAttribute("message", failNode.get("message").asText());
+            model.addAttribute("code", failNode.get("code").asText());
+            return "order/fail";
+        }
+    }
+    @RequestMapping("/charge/{id}/success")
+    public String confirmChargePayment(
+            @PathVariable long id,
+            @RequestParam String paymentKey,
+            @RequestParam String orderId,
+            @RequestParam Long amount,
+            Model model,
+            @AuthenticationPrincipal MemberContext memberContext
+    ) throws Exception {
+        Member member = memberContext.getMember();
+        // 키값을 받아옴
+        SECRET_KEY = orderService.getSECRET_KEY();
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> payloadMap = new HashMap<>();
+        payloadMap.put("orderId", orderId);
+        payloadMap.put("amount", String.valueOf(amount));
+
+
+        HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(payloadMap), headers);
+
+        ResponseEntity<JsonNode> responseEntity = restTemplate.postForEntity(
+                "https://api.tosspayments.com/v1/payments/" + paymentKey, request, JsonNode.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            memberService.addCash(member, amount, "충전__토스페이먼츠__입금");
+            memberContext.setRestCash(member.getRestCash());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            model.addAttribute("member", member);
+            return "redirect:/member/modify?msg=%s".formatted(Ut.url.encode("충전이 완료되었습니다."));
+        } else {
+            JsonNode failNode = responseEntity.getBody();
             model.addAttribute("message", failNode.get("message").asText());
             model.addAttribute("code", failNode.get("code").asText());
             return "order/fail";

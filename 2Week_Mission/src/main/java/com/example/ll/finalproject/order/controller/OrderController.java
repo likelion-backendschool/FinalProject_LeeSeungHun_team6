@@ -18,8 +18,6 @@ import com.example.ll.finalproject.util.Ut;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,8 +55,7 @@ public class OrderController {
         return "order/list";
     }
     
-    
-    //선택된 상품만 주문하기
+
     @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
     public String makeOrder(@AuthenticationPrincipal MemberContext memberContext, String ids) {
@@ -71,7 +68,9 @@ public class OrderController {
                 .mapToLong(Long::parseLong)
                 .forEach(id -> {
                     CartItem cartItem = cartService.findItemById(id).orElse(null);
-
+                    /* 선택된 상품만 주문하기
+                    * 주문한 상품을 orderItemList에 추가하고 카트에서 제거한다.
+                    */
                     if (cartService.actorCanDelete(buyer, cartItem)) {
                         Product product = cartItem.getProduct();
                         orderItemList.add(new OrderItem(product));
@@ -79,7 +78,7 @@ public class OrderController {
                     }
                 });
 
-        Order order = orderService.create(buyer, orderItemList);
+        Order order = orderService.create(buyer, orderItemList); //주문 생성, 결제 전 상태
         String redirect = "redirect:/order/%d".formatted(order.getId()) + "?msg=" + Ut.url.encode("%d번 주문이 생성되었습니다.".formatted(order.getId()));
 
         return redirect;
@@ -105,7 +104,7 @@ public class OrderController {
 
     @GetMapping("/{id}/cancel")
     @PreAuthorize("isAuthenticated()")
-    public String cancelOrder(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id, Model model) {
+    public String cancelOrder(@AuthenticationPrincipal MemberContext memberContext, @PathVariable long id) {
         Order order = orderService.findForPrintById(id).get();
 
         Member actor = memberContext.getMember();
@@ -113,6 +112,7 @@ public class OrderController {
         if (orderService.actorCanSee(actor, order) == false) {
             throw new ActorCanNotSeeOrderException();
         }
+        /* 주문 취소시 주문 삭제 */
         orderService.cancelOrder(order);
         String msg = "%d번 주문이 삭제되었습니다.".formatted(order.getId());
         msg = Ut.url.encode(msg);
@@ -128,6 +128,9 @@ public class OrderController {
         if (orderService.actorCanSee(actor, order) == false) {
             throw new OrderIdNotMatchedException();
         }
+        /*
+        * 10분 이내의 아이템만 환불 가능
+        * */
         String msg;
         if(orderService.isTenMinute(order.getModifyDate())){
             orderService.refund(order);
@@ -154,6 +157,7 @@ public class OrderController {
             throw new ActorCanNotPayOrderException();
         }
 
+        //예치금으로만 결제
         orderService.payByRestCashOnly(order);
         List<OrderItem> orderItems = order.getOrderItems();
 
@@ -181,6 +185,7 @@ public class OrderController {
             }
         });
     }
+    //키는 서비
     private String SECRET_KEY = "";
 
     @RequestMapping("/{id}/success")
@@ -200,6 +205,7 @@ public class OrderController {
         if (id != orderIdInputed) {
             throw new OrderIdNotMatchedException();
         }
+        // 키값을 받아옴
         SECRET_KEY = orderService.getSECRET_KEY();
         HttpHeaders headers = new HttpHeaders();
         // headers.setBasicAuth(SECRET_KEY, ""); // spring framework 5.2 이상 버전에서 지원
@@ -226,6 +232,15 @@ public class OrderController {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
 
             orderService.payByTossPayments(order, payPriceRestCash);
+
+            List<OrderItem> orderItems = order.getOrderItems();
+
+            List<Product> products = new ArrayList<>();
+            for(OrderItem orderItem:orderItems){
+                products.add(orderItem.getProduct());
+            }
+
+            mybookService.addProduct(actor, products);
 
             return "redirect:/order/%d?msg=%s".formatted(order.getId(), Ut.url.encode("결제가 완료되었습니다."));
         } else {

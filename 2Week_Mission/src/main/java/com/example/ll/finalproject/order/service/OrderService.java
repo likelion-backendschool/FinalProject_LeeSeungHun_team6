@@ -139,8 +139,8 @@ public class OrderService {
         LocalDateTime nowTime = LocalDateTime.now();
         Duration duration = Duration.between(modifyDate, nowTime);
         long dif = duration.getSeconds();
-        System.out.println(dif+"초");
-        if(dif<=600){
+//        System.out.println(dif+"초");
+        if(dif <= 600){
             return true;
         }
         return false;

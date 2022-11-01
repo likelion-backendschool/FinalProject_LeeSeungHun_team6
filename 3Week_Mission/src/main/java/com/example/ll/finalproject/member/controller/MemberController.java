@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -144,4 +145,13 @@ public class MemberController {
         }
         return "redirect:/member/findPassword?msg=" + Ut.url.encode("메일로 임시비밀번호가 발송되었습니다.");
     }
+
+    @GetMapping("/charge")
+    @PreAuthorize("isAuthenticated()")
+    public String charge(@AuthenticationPrincipal MemberContext context, Model model){
+        model.addAttribute("member", context);
+        return "member/charge";
+    }
+
+
 }
