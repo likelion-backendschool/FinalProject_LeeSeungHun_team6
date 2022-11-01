@@ -2,6 +2,12 @@ spring:
   profiles:
     active: dev
     include: apikey
+  batch:
+    job:
+      names: ${job.name:NONE}
+    jdbc:
+      initialize-schema: ALWAYS
+  #        스프링 배치 관련 DB 자동생성
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -27,7 +33,7 @@ spring:
 logging:
   level:
     root: info
-    com.example.ll.finalproject: debug
+    com.example.ll.finalproject.app: debug
     org.hibernate.type.descriptor.sql: trace
 custom:
   site:

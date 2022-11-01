@@ -1,17 +1,14 @@
 package com.example.ll.finalproject.service;
 
-import com.example.ll.finalproject.article.entity.Article;
-import com.example.ll.finalproject.article.service.ArticleService;
-import com.example.ll.finalproject.hashTag.entity.HashTag;
-import com.example.ll.finalproject.hashTag.service.HashTagService;
+import com.example.ll.finalproject.app.article.entity.Article;
+import com.example.ll.finalproject.app.article.service.ArticleService;
+import com.example.ll.finalproject.app.hashTag.entity.HashTag;
+import com.example.ll.finalproject.app.hashTag.service.HashTagService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
