@@ -36,6 +36,7 @@ public class ArticleController {
         model.addAttribute("articles", articles);
         return "article/list";
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String showWrite() {
