@@ -82,9 +82,7 @@ public class AdmRebateController {
                 });
 
         String referer = req.getHeader("Referer");
-        System.out.println("dd");
-        System.out.println(referer);
-        System.out.println("zz");
+
         String yearMonth = Ut.url.getQueryParamValue(referer, "yearMonth", "");
 
         String redirect = "redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth;
