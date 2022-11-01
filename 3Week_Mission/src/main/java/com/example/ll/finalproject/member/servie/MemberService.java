@@ -186,6 +186,11 @@ public class MemberService {
         return foundMember.getRestCash();
     }
 
+    public Member findByAuthLevel(int num) {
+        Member admin = memberRepository.findByAuthLevel(num).orElse(null);
+        return admin;
+    }
+
 
     @Data
     @AllArgsConstructor

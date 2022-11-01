@@ -107,7 +107,16 @@ public class RebateOrderItem extends BaseEntity {
             return 0;
         }
 
-        return payPrice - pgFee - wholesalePrice;
+        /*
+        판매자 = 도매가(기존 가격*0.5) - 결제수수료 =  wholesalePrice - pgFee
+        멋북스 = 기존 가격 - (도매가-결제수수료) = price - wholesalePrice + pgFee
+        * */
+
+        /*
+        * 요구 사항 => PG 수수료는 0원에 정산 비율은 판매자 멋북스 5:5
+        * */
+
+        return wholesalePrice - pgFee;
     }
 
     public boolean isRebateAvailable() {

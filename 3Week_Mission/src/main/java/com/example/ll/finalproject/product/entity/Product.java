@@ -83,7 +83,7 @@ public class Product extends BaseEntity {
     }
 
     public int getWholesalePrice() {
-        return (int) Math.ceil(getPrice() * 0.7);
+        return (int) Math.ceil(getPrice() * 0.5);
     }
 
     public boolean isOrderable() {
