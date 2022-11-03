@@ -1,27 +1,30 @@
-package com.example.ll.finalproject.order.controller;
+package com.example.ll.finalproject.app.order.controller;
 
-import com.example.ll.finalproject.cart.entity.CartItem;
-import com.example.ll.finalproject.cart.service.CartService;
-import com.example.ll.finalproject.member.entity.Member;
-import com.example.ll.finalproject.member.servie.MemberService;
-import com.example.ll.finalproject.mybook.service.MyBookService;
-import com.example.ll.finalproject.order.entity.Order;
-import com.example.ll.finalproject.order.entity.OrderItem;
-import com.example.ll.finalproject.order.exception.ActorCanNotPayOrderException;
-import com.example.ll.finalproject.order.exception.ActorCanNotSeeOrderException;
-import com.example.ll.finalproject.order.exception.OrderIdNotMatchedException;
-import com.example.ll.finalproject.order.exception.OrderNotEnoughRestCashException;
-import com.example.ll.finalproject.order.service.OrderService;
-import com.example.ll.finalproject.product.entity.Product;
-import com.example.ll.finalproject.security.dto.MemberContext;
-import com.example.ll.finalproject.util.Ut;
+import com.example.ll.finalproject.app.cart.entity.CartItem;
+import com.example.ll.finalproject.app.cart.service.CartService;
+import com.example.ll.finalproject.app.member.entity.Member;
+import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.mybook.service.MyBookService;
+import com.example.ll.finalproject.app.order.entity.Order;
+import com.example.ll.finalproject.app.order.entity.OrderItem;
+import com.example.ll.finalproject.app.order.exception.ActorCanNotPayOrderException;
+import com.example.ll.finalproject.app.order.exception.ActorCanNotSeeOrderException;
+import com.example.ll.finalproject.app.order.exception.OrderIdNotMatchedException;
+import com.example.ll.finalproject.app.order.exception.OrderNotEnoughRestCashException;
+import com.example.ll.finalproject.app.order.service.OrderService;
+import com.example.ll.finalproject.app.product.entity.Product;
+import com.example.ll.finalproject.app.security.dto.MemberContext;
+import com.example.ll.finalproject.app.util.Ut;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -246,6 +249,48 @@ public class OrderController {
         } else {
             JsonNode failNode = responseEntity.getBody();
             model.addAttribute("order",order);
+            model.addAttribute("message", failNode.get("message").asText());
+            model.addAttribute("code", failNode.get("code").asText());
+            return "order/fail";
+        }
+    }
+    @RequestMapping("/charge/{id}/success")
+    public String confirmChargePayment(
+            @PathVariable long id,
+            @RequestParam String paymentKey,
+            @RequestParam String orderId,
+            @RequestParam Long amount,
+            Model model,
+            @AuthenticationPrincipal MemberContext memberContext
+    ) throws Exception {
+        Member member = memberContext.getMember();
+        // 키값을 받아옴
+        SECRET_KEY = orderService.getSECRET_KEY();
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((SECRET_KEY + ":").getBytes()));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, String> payloadMap = new HashMap<>();
+        payloadMap.put("orderId", orderId);
+        payloadMap.put("amount", String.valueOf(amount));
+
+
+        HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(payloadMap), headers);
+
+        ResponseEntity<JsonNode> responseEntity = restTemplate.postForEntity(
+                "https://api.tosspayments.com/v1/payments/" + paymentKey, request, JsonNode.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            memberService.addCash(member, amount, "충전__토스페이먼츠__입금");
+            memberContext.setRestCash(member.getRestCash());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(memberContext, member.getPassword(), memberContext.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            model.addAttribute("member", member);
+            return "redirect:/member/modify?msg=%s".formatted(Ut.url.encode("충전이 완료되었습니다."));
+        } else {
+            JsonNode failNode = responseEntity.getBody();
             model.addAttribute("message", failNode.get("message").asText());
             model.addAttribute("code", failNode.get("code").asText());
             return "order/fail";

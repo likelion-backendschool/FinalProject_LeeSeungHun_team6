@@ -1,13 +1,14 @@
-package com.example.ll.finalproject.order.service;
+package com.example.ll.finalproject.app.order.service;
 
-import com.example.ll.finalproject.cart.entity.CartItem;
-import com.example.ll.finalproject.cart.service.CartService;
-import com.example.ll.finalproject.member.entity.Member;
-import com.example.ll.finalproject.member.servie.MemberService;
-import com.example.ll.finalproject.order.entity.Order;
-import com.example.ll.finalproject.order.entity.OrderItem;
-import com.example.ll.finalproject.order.repository.OrderRepository;
-import com.example.ll.finalproject.product.entity.Product;
+import com.example.ll.finalproject.app.cart.entity.CartItem;
+import com.example.ll.finalproject.app.cart.service.CartService;
+import com.example.ll.finalproject.app.member.entity.Member;
+import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.order.entity.Order;
+import com.example.ll.finalproject.app.order.entity.OrderItem;
+import com.example.ll.finalproject.app.order.repository.OrderItemRepository;
+import com.example.ll.finalproject.app.order.repository.OrderRepository;
+import com.example.ll.finalproject.app.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -27,6 +28,8 @@ public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
     private final MemberService memberService;
+
+    private final OrderItemRepository orderItemRepository;
 
     @Value("${payment_serverKey}")
     private String SECRET_KEY;
@@ -103,7 +106,7 @@ public class OrderService {
         memberService.addCash(order.getBuyer(), payPrice, "주문__%d__환불__예치금".formatted(order.getId()));
 
         order.setRefundDone();
-        orderRepository.delete(order);
+        orderRepository.save(order);
     }
 
     public Optional<Order> findForPrintById(long id) {
@@ -118,7 +121,7 @@ public class OrderService {
     }
 
     public List<Order> getOrderByBuyer(Member buyer) {
-        List<Order> orders = orderRepository.findAllByBuyerId(buyer.getId());
+        List<Order> orders = orderRepository.findAllByBuyerIdAndIsRefunded(buyer.getId(), false);
         if(orders==null){
             return null;
         }
@@ -163,4 +166,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<OrderItem> findAllByPayDateBetweenOrderByIdAsc(LocalDateTime fromDate, LocalDateTime toDate) {
+        return orderItemRepository.findAllByPayDateBetween(fromDate, toDate);
+    }
 }

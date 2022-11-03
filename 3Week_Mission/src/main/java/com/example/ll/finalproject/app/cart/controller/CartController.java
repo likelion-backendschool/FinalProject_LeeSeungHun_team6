@@ -1,12 +1,12 @@
-package com.example.ll.finalproject.cart.controller;
+package com.example.ll.finalproject.app.cart.controller;
 
-import com.example.ll.finalproject.cart.entity.CartItem;
-import com.example.ll.finalproject.cart.service.CartService;
-import com.example.ll.finalproject.member.entity.Member;
-import com.example.ll.finalproject.product.entity.Product;
-import com.example.ll.finalproject.product.service.ProductService;
-import com.example.ll.finalproject.security.dto.MemberContext;
-import com.example.ll.finalproject.util.Ut;
+import com.example.ll.finalproject.app.cart.entity.CartItem;
+import com.example.ll.finalproject.app.cart.service.CartService;
+import com.example.ll.finalproject.app.member.entity.Member;
+import com.example.ll.finalproject.app.product.entity.Product;
+import com.example.ll.finalproject.app.product.service.ProductService;
+import com.example.ll.finalproject.app.security.dto.MemberContext;
+import com.example.ll.finalproject.app.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

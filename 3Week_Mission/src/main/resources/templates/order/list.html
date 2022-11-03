@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>주문 리스트</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>주문 리스트</h1>
+            <div th:if="${not #strings.isEmpty(orders)}">
+                <table>
+                    <tr>
+                        <th>번호</th>
+                        <th>가격</th>
+                        <th>구매 날짜</th>
+                        <th>제목</th>
+                        <th>환불</th>
+                        <th>상품 목록</th>
+                    </tr>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}" th:id="${order.id}"
+                            th:onclick="showDetailOrder(this.getAttribute('id'))"
+                        ></td>
+                        <td th:text="${order.calculatePayPrice}" th:id="${order.id}"
+                            th:onclick="showDetailOrder(this.getAttribute('id'))"
+                        ></td>
+                        <td th:text="${order.modifyDate}" th:id="${order.id}"
+                            th:onclick="showDetailOrder(this.getAttribute('id'))"
+                        ></td>
+                        <td th:text="${order.name}" th:id="${order.id}"
+                            th:onclick="showDetailOrder(this.getAttribute('id'))"
+                        ></td>
+                        <td th:if="${!order.payable}">
+                            <a onclick="return confirm('정말로 환불하시겠습니까?')" class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}/refund|}">환불</a>
+                        </td>
+                        <td th:if="${order.payable}">
+                            <a class="btn btn-secondary btn-outline" th:href="@{|/order/${order.id}|}">결제</a>
+                        </td>
+                        <td th:each="orderItem : ${order.orderItems}">
+                            <div th:text="${orderItem.product.subject}" th:id="${order.id}"
+                            ></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-2 mt-2 gap-2">
+                <a href="/cart/list" class="btn btn-secondary btn-outline">장바구니</a>
+                <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>도서 등록</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>도서 등록</h1>
+            <script>
+                let ProuctCreate__submitDone = false;
+
+                function ProuctCreate__submit(form) {
+                    if (ProuctCreate__submitDone) {
+                        return;
+                    }
+
+                    form.subject.value = form.subject.value.trim();
+
+                    if (form.subject.value.length == 0) {
+                        warningModal("제목을 입력해주세요.");
+                        form.subject.focus();
+
+                        return;
+                    }
+
+                    form.price.value = form.price.value.trim();
+
+                    if (form.price.value.length == 0) {
+                        warningModal("가격을 입력해주세요.");
+                        form.price.focus();
+
+                        return;
+                    }
+
+                    form.submit();
+                    ProuctCreate__submitDone = true;
+                }
+            </script>
+
+            <form th:action method="POST" class="flex flex-col gap-3"
+                  onsubmit="ProuctCreate__submit(this); return false;">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">글 키워드</span>
+                    </label>
+                    <select class="select select-bordered select-2" name="articleId" multiple>
+                        <option th:each="article : ${articles}" th:value="${article.id}" th:text="|${article.content}|"></option>
+                    </select>
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">제목</span>
+                    </label>
+                    <input autofocus type="text" name="subject" placeholder="제목" class="input input-bordered"
+                           maxlength="50">
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">가격</span>
+                    </label>
+                    <input type="number" name="price" placeholder="가격" class="input input-bordered"
+                           maxlength="50">
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">해시태그</span>
+                    </label>
+                    <input autofocus type="text" name="productTagContents" placeholder="#태그1 #태그2" class="input input-bordered"
+                           maxlength="50">
+                </div>
+
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input class="btn btn-primary" type="submit" value="도서 등록">
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">취소</button>
+                </div>
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>
