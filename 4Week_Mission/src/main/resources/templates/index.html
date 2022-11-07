@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>메인 페이지</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+        <div>
+            <h1>메인 페이지</h1>
+            <table>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성 날짜</th>
+                    <th>수정 날짜</th>
+                </tr>
+                <tr th:each="article : ${articles}">
+                    <td th:text="${article.id}" th:id="${article.id}"
+                        th:onclick="showDetailArticle(this.getAttribute('id'))"
+                        ></td>
+                    <td th:text="${article.subject}" th:id="${article.id}"
+                        th:onclick="showDetailArticle(this.getAttribute('id'))"></td>
+                    <td th:text="${article.author.username}" th:id="${article.id}"
+                        th:onclick="showDetailArticle(this.getAttribute('id'))"></td>
+                    <td th:text="${article.createDate}" th:id="${article.id}"
+                        th:onclick="showDetailArticle(this.getAttribute('id'))"></td>
+                    <td th:text="${article.modifyDate}" th:id="${article.id}"
+                        th:onclick="showDetailArticle(this.getAttribute('id'))"></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+</body>
+
+
+
+</html>

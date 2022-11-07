@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html layout:decorate="~{/adm/layout/layout}">
+
+<head>
+    <title>정산데이터 목록</title>
+</head>
+
+<main layout:fragment="main">
+    <div class="container mx-auto">
+        <div>
+            <h1>정산데이터 목록</h1>
+
+            <div class="overflow-x-auto">
+                <table class="table table-compact w-full">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" class="orderItemCheckboxAll checkbox">
+                        </th>
+                        <th>번호</th>-->
+                        <th>사용자</th>
+                        <th>은행</th>
+                        <th>계좌 번호</th>
+                        <th>가격</th>
+                        <th>출금 여부</th>
+                        <th>요청 날짜</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="withdraw : ${withdraws}">
+                        <td>
+                            <input onchange="WithdrawItemCheckbox__changed();" th:if="${!withdraw.isPaid}"
+                                   type="checkbox" class="withdrawItemCheckbox checkbox" th:value="${withdraw.id}">
+                        </td>
+                        <td th:text="${withdraw.id}" th:id="${withdraw.id}"-->
+                        ></td>
+                        <td th:text="${withdraw.member.username}" th:id="${withdraw.id}"
+                        ></td>
+                        <td th:text="${withdraw.bankName}" th:id="${withdraw.id}"
+                        ></td>
+                        <td th:text="${withdraw.bankAccountNo}" th:id="${withdraw.id}"
+                        ></td>
+                        <td th:text="${withdraw.price}" th:id="${withdraw.id}"
+                        ></td>
+                        <td th:text="${withdraw.isPaid}" th:id="${withdraw.id}"
+                        ></td>
+                        <td th:text="${withdraw.createDate}" th:id="${withdraw.id}"
+                        ></td>
+                        <td>
+                            <a th:if="${!withdraw.isPaid}" href="javascript:;" onclick="$(this).next().submit();"
+                               class="btn btn-primary btn-xs">건별 출금</a>
+                            <form method="POST" th:action="@{|/adm/withdraw/${withdraw.id}|}"
+                                  hidden></form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a href="javascript:;" onclick="ApplyForm__submit();" class="btn btn-primary btn-sm">선택 출금</a>
+                <form method="POST" name="applyForm" th:action="@{|/adm/withdraw/withdrawCheck|}" hidden>
+                    <input type="hidden" name="ids">
+                </form>
+
+                <script>
+                    // 전체선택 체크박스
+                    const $withdrawItemCheckboxAll = $('.withdrawItemCheckboxAll');
+                    // 아이템 체크박스
+                    const $withdrawItemCheckbox = $('.withdrawItemCheckbox');
+
+                    $withdrawItemCheckboxAll.change(function () {
+                        const allChecked = $(this).prop('checked');
+                        $withdrawItemCheckbox.prop('checked', allChecked); // 아이템 체크박스들에게 체크상태 동기화
+                    });
+
+                    function WithdrawItemCheckbox__changed() {
+                        const allChecked = $withdrawItemCheckbox.length == $('.withdrawItemCheckbox:checked').length;
+
+                        $withdrawItemCheckboxAll.prop('checked', allChecked);
+                    }
+                    let ApplyForm__submitDone = false;
+
+                    function ApplyForm__submit() {
+                        if ( ApplyForm__submitDone ) return;
+
+                        const form = document.applyForm;
+
+                        const $checked = $('.withdrawItemCheckbox:checked');
+
+                        if ( $checked.length == 0 ) {
+                            warningModal("출금할 주문 품목을 선택해주세요.");
+                            return;
+                        }
+                        const ids = $checked.map((index, el) => $(el).val()).get();
+                        form.ids.value = ids;
+                        form.submit();
+                        ApplyForm__submitDone = true;
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</main>
+
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml">-->
+
+<!--<head>-->
+<!--    <title>출금 리스트</title>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<main layout:fragment="main">-->
+<!--    <section class="section section-join flex-grow flex flex-col items-center justify-center">-->
+<!--        <div>-->
+<!--            <h1>출금 리스트</h1>-->
+<!--            <div th:if="${not #strings.isEmpty(withdraws)}">-->
+<!--                <table>-->
+<!--                    <tr>-->
+<!--                        <th>번호&nbsp;</th>-->
+<!--                        <th>사용자&nbsp; </th>-->
+<!--                        <th>은행&nbsp;</th>-->
+<!--                        <th>계좌 번호&nbsp;</th>-->
+<!--                        <th>가격&nbsp;</th>-->
+<!--                        <th>출금여부&nbsp;</th>-->
+<!--                        <th>요청날짜&nbsp;</th>-->
+<!--                    </tr>-->
+<!--                    <tr th:each="withdraw : ${withdraws}">-->
+<!--                        <td th:text="${withdraw.id}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.member.username}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.bankName}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.bankAccountNo}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.price}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.isPaid}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.createDate}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                        <td th:text="${withdraw.createDate}" th:id="${withdraw.id}"-->
+<!--                        ></td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--    </section>-->
+
+<!--</main>-->
+<!--</body>-->
+<!--</html>-->

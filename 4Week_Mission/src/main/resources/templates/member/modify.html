@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>회원정보 수정</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <section class="section section-join flex-grow flex flex-col items-center justify-center">
+
+        <div class="max-w-md w-full px-2 pt-4">
+            <h1 class="font-bold text-lg">회원정보 수정</h1>
+            <script>
+                function ModifyForm__submit(form) {
+                    form.nickname.value = form.nickname.value.trim();
+
+                    if (form.nickname.value.length == 0) {
+                        warningModal("닉네임 입력해주세요.");
+                        form.nickname.focus();
+
+                        return;
+                    }
+
+                    form.email.value = form.email.value.trim();
+
+                    if (form.email.value.length == 0) {
+                        warningModal("이메일을 입력해주세요.");
+                        form.email.focus();
+
+                        return;
+                    }
+
+                    form.submit();
+                }
+
+            </script>
+
+
+            <form th:action method="POST" enctype="multipart/form-data" onsubmit="ModifyForm__submit(this); return false;">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">아이디</span>
+                    </label>
+                    <span autofocus th:text="${#authentication.principal.username}" class="input input-bordered"
+                          maxlength="50"></span>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">이메일</span>
+                    </label>
+                    <input autofocus type="email" name="email" placeholder="이메일" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.email}">
+                </div>
+                <div class="form-control" sec:authorize="hasAuthority('author')">
+                    <label class="label">
+                        <span class="label-text">닉네임</span>
+                    </label>
+                    <input autofocus type="text" name="nickname" placeholder="닉네임" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.nickname}">
+                </div>
+
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <input class="btn btn-primary" type="submit" value="회원정보 수정">
+                </div>
+                <br/>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <a href="/member/modifyPassword" class="btn btn-secondary btn-outline">비밀번호 수정</a>
+                    <button type="button" onclick="history.back();" class="btn btn-secondary btn-outline">뒤로 가기</button>
+                </div>
+                <br/>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">현재 예치금</span>
+                    </label>
+                    <input autofocus type="text" placeholder="현재 예치금" class="input input-bordered"
+                           maxlength="50" th:value="${#authentication.principal.restCash}">
+                </div>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <a href="/member/charge" class="btn btn-secondary btn-outline">입금 신청</a>
+                    <a href="/withdraw/apply" class="btn btn-secondary btn-outline">출금 신청</a>
+                </div>
+                <br/>
+                <div class="grid grid-cols-2 mt-2 gap-2">
+                    <a href="/product/list/myProduct" class="btn btn-secondary btn-outline">내 도서</a>
+                    <a href="/order/list" class="btn btn-secondary btn-outline">주문 목록</a>
+                </div>
+
+                </a>
+            </form>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>
