@@ -13,6 +13,7 @@ public class AppConfig {
     @Getter
     private static ApplicationContext context;
 
+    //static을 자동 주입하기 위해 setter에 @Autowired
     @Autowired
     public void setContext(ApplicationContext context) {
         AppConfig.context = context;

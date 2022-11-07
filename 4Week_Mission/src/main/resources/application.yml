@@ -39,3 +39,5 @@ custom:
   site:
     name: FinalProject
     baseUrl: "http://localhost:8010"
+  jwt:
+    secretKey: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
