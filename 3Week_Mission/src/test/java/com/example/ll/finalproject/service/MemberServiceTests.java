@@ -1,7 +1,7 @@
 package com.example.ll.finalproject.service;
 
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

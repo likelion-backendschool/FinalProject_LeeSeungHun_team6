@@ -1,4 +1,4 @@
-package com.example.ll.finalproject.app.member.servie;
+package com.example.ll.finalproject.app.member.service;
 
 import com.example.ll.finalproject.app.base.dto.RsData;
 import com.example.ll.finalproject.app.cash.entity.CashLog;

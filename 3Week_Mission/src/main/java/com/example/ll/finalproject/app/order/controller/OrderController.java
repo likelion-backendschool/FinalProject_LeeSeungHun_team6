@@ -3,7 +3,7 @@ package com.example.ll.finalproject.app.order.controller;
 import com.example.ll.finalproject.app.cart.entity.CartItem;
 import com.example.ll.finalproject.app.cart.service.CartService;
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.mybook.service.MyBookService;
 import com.example.ll.finalproject.app.order.entity.Order;
 import com.example.ll.finalproject.app.order.entity.OrderItem;

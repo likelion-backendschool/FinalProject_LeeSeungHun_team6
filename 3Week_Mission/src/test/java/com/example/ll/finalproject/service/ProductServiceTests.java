@@ -3,7 +3,7 @@ package com.example.ll.finalproject.service;
 import com.example.ll.finalproject.app.keyword.entity.Keyword;
 import com.example.ll.finalproject.app.keyword.servcice.KeywordService;
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.product.entity.Product;
 import com.example.ll.finalproject.app.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;

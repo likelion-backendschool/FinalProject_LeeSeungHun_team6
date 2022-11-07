@@ -4,7 +4,7 @@ package com.example.ll.finalproject.app.rebate.service;
 import com.example.ll.finalproject.app.base.dto.RsData;
 import com.example.ll.finalproject.app.cash.entity.CashLog;
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.order.entity.OrderItem;
 import com.example.ll.finalproject.app.order.service.OrderService;
 import com.example.ll.finalproject.app.rebate.entity.RebateOrderItem;

@@ -5,7 +5,7 @@ import com.example.ll.finalproject.app.article.entity.Article;
 import com.example.ll.finalproject.app.article.service.ArticleService;
 import com.example.ll.finalproject.app.cart.service.CartService;
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.mybook.service.MyBookService;
 import com.example.ll.finalproject.app.order.entity.Order;
 import com.example.ll.finalproject.app.order.service.OrderService;
