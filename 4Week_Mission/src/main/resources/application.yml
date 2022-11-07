@@ -1,13 +1,6 @@
 spring:
   profiles:
     active: dev
-    include: apikey
-  batch:
-    job:
-      names: ${job.name:NONE}
-    jdbc:
-      initialize-schema: ALWAYS
-  #        스프링 배치 관련 DB 자동생성
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -19,17 +12,6 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: aaddss528528@gmail.com
-    password: ${GOOGLE_KEY}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
 logging:
   level:
     root: info

@@ -26,25 +26,25 @@ public class AuthTests {
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    @DisplayName("POST /member/login 은 로그인 처리 URL 이다.")
-    void t1() throws Exception {
-        // When
-        ResultActions resultActions = mvc
-                .perform(
-                        post("/member/login")
-                                .content("""
-                                        {
-                                            "username": "user1",
-                                            "password": "1234"
-                                        }
-                                        """.stripIndent())
-                                .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)) //json으로 보냄
-                )
-                .andDo(print());
-
-        // Then
-        resultActions
-                .andExpect(status().is2xxSuccessful());
-    }
+//    @Test
+//    @DisplayName("POST /member/login 은 로그인 처리 URL 이다.")
+//    void t1() throws Exception {
+//        // When
+//        ResultActions resultActions = mvc
+//                .perform(
+//                        post("/member/login")
+//                                .content("""
+//                                        {
+//                                            "username": "user1",
+//                                            "password": "1234"
+//                                        }
+//                                        """.stripIndent())
+//                                .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)) //json으로 보냄
+//                )
+//                .andDo(print());
+//
+//        // Then
+//        resultActions
+//                .andExpect(status().is2xxSuccessful());
+//    }
 }

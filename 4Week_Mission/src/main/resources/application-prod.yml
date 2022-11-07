@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://${prodDbIp}:3306/market_prod?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${prodDbIp}:3306/reader_prod?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: ${prodDbId}
     password: ${prodDbPw}
   jpa:

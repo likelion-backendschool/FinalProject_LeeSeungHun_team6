@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@Profile("dev") //dev가 활성화되었을 때 컨테이너에 등록되는 빈 정의
-public class DevInitData {
+@Profile("test") //dev가 활성화되었을 때 컨테이너에 등록되는 빈 정의
+public class TestInitData {
     @Bean
     CommandLineRunner initData(MemberService memberService, MyBookService mybookService, PasswordEncoder passwordEncoder) {
         String password = passwordEncoder.encode("1234");

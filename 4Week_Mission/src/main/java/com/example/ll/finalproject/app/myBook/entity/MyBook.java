@@ -1,4 +1,4 @@
-package com.example.ll.finalproject.app.mybook.entity;
+package com.example.ll.finalproject.app.myBook.entity;
 
 import com.example.ll.finalproject.app.base.entity.BaseEntity;
 import com.example.ll.finalproject.app.member.entity.Member;
@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class Mybook extends BaseEntity {
+public class MyBook extends BaseEntity {
     @ManyToOne
     private Member author;
 

@@ -1,14 +1,14 @@
 # 테스트 DB 생성
-DROP DATABASE IF EXISTS market_test;
-CREATE DATABASE market_test;
-USE market_test;
+DROP DATABASE IF EXISTS reader_test;
+CREATE DATABASE reader_test;
+USE reader_test;
 
 # 개발 DB 생성
-DROP DATABASE IF EXISTS market_dev;
-CREATE DATABASE market_dev;
-USE market_dev;
+DROP DATABASE IF EXISTS reader_dev;
+CREATE DATABASE reader_dev;
+USE reader_dev;
 
 # 운영 DB 생성
-DROP DATABASE IF EXISTS market_prod;
-CREATE DATABASE market_prod;
-USE market_prod;
+DROP DATABASE IF EXISTS reader_prod;
+CREATE DATABASE reader_prod;
+USE reader_prod;
