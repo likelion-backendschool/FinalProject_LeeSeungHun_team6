@@ -1,6 +1,7 @@
 package com.example.ll.finalproject.app.security;
 
 import com.example.ll.finalproject.app.security.filter.JwtAuthorizationFilter;
+import com.example.ll.finalproject.app.security.handler.ApiAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final ApiAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {

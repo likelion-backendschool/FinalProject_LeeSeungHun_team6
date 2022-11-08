@@ -19,16 +19,16 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer"
 )
 public class SpringDocConfig {
-    @Bean
-    public OpenAPI springShopOpenAPI() {
-        return new OpenAPI()
-                .info(new io.swagger.v3.oas.models.info.Info().title("SpringShop API")
-                        .description("Spring shop sample application")
-                        .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-                .externalDocs(new ExternalDocumentation()
-                        .description("SpringShop Wiki Documentation")
-                        .url("https://springshop.wiki.github.org/docs"));
-        //http://localhost:8080/swagger-ui/index.html 접속 후 확인가능
-    }
+//    @Bean
+//    public OpenAPI springShopOpenAPI() {
+//        return new OpenAPI()
+//                .info(new io.swagger.v3.oas.models.info.Info().title("SpringShop API")
+//                        .description("Spring shop sample application")
+//                        .version("v0.0.1")
+//                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
+//                .externalDocs(new ExternalDocumentation()
+//                        .description("SpringShop Wiki Documentation")
+//                        .url("https://springshop.wiki.github.org/docs"));
+//        //http://localhost:8080/swagger-ui/index.html 접속 후 확인가능
+//    }
 }

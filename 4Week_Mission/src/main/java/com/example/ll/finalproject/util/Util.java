@@ -34,6 +34,13 @@ public class Util {
                 return null;
             }
         }
+        public static CharSequence toStr(RsData rs) {
+            try {
+                return getObjectMapper().writeValueAsString(rs);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         public static Map<String, Object> toMap(String jsonStr) {
             try {
@@ -43,6 +50,7 @@ public class Util {
                 return null;
             }
         }
+
     }
     public static <K, V> Map<K, V> mapOf(Object... args) {
         Map<K, V> map = new LinkedHashMap<>();
