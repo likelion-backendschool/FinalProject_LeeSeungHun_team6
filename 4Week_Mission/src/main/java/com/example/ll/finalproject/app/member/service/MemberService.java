@@ -7,6 +7,8 @@ import com.example.ll.finalproject.app.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.Optional;
@@ -50,4 +52,17 @@ public class MemberService {
 
         return member;
     }
+
+    @Transactional
+    public String genAccessToken(Member member) {
+        String accessToken = member.getAccessToken();
+
+        if (StringUtils.hasLength(accessToken) == false ) {
+            accessToken = jwtProvider.generateAccessToken(member.getAccessTokenClaims(), 60L * 60 * 24 * 365 * 100);
+            member.setAccessToken(accessToken);
+        }
+
+        return accessToken;
+    }
+
 }
