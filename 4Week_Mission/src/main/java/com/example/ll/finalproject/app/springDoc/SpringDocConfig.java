@@ -10,7 +10,6 @@ import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
 @OpenAPIDefinition(info = @Info(title = "MBOOKS API", version = "v1"))
 @SecurityScheme(
         name = "bearerAuth",
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT",
         scheme = "bearer"
 )
+@Configuration
 public class SpringDocConfig {
 //    @Bean
 //    public OpenAPI springShopOpenAPI() {

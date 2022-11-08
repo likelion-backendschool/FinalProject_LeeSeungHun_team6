@@ -33,13 +33,17 @@
   - [ ] bookChapters를 포함한 상세 정보
 
 ### API 문서화
-- [ ] Spring Doc으로 API 문서화
+- [x] Spring Doc으로 API 문서화
   - [x] Member 문서화
-  - [ ] MyBook 문서화
+  - [x] MyBook 문서화
 
 ---
 **[접근 방법]**
 - 목표했던 기능이 정상적으로 수행되는지를 우선적으로 판단하여 개발하고 추후 리팩토링을 진행한다.
+
+---
+**[특이점]**
+- Spring Doc으로 API 문서화하는 과정에서 기본적인 @Controller는 인식하지 못하고 @RestController만 인식할 수 있었다.
 
 
 **[결과물]**
