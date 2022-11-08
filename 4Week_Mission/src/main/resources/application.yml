@@ -25,6 +25,6 @@ logging:
 custom:
   site:
     name: FinalProject
-    baseUrl: "http://localhost:8010"
+    baseUrl: "http://localhost:8080"
   jwt:
     secretKey: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
