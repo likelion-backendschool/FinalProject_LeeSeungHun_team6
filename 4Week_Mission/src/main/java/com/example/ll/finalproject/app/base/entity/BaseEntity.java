@@ -1,6 +1,9 @@
 package com.example.ll.finalproject.app.base.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,15 +29,13 @@ public class BaseEntity {
     private Long id;
     @CreatedDate
     private LocalDateTime createDate;
-    @Setter
     @LastModifiedDate
     private LocalDateTime modifyDate;
+    @Transient // 아래 필드가 DB 필드가 되는 것을 막는다.
+    @Builder.Default
+    private Map<String, Object> extra = new LinkedHashMap<>();
 
     public BaseEntity(long id) {
         this.id = id;
     }
-
-    @Transient // 아래 필드가 DB 필드가 되는 것을 막는다.
-    @Builder.Default
-    private Map<String, Object> extra = new LinkedHashMap<>();
 }

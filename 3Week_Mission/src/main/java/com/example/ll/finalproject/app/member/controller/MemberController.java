@@ -2,7 +2,7 @@ package com.example.ll.finalproject.app.member.controller;
 
 import com.example.ll.finalproject.app.member.dto.request.JoinForm;
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.security.dto.MemberContext;
 import com.example.ll.finalproject.app.util.Ut;
 import lombok.RequiredArgsConstructor;

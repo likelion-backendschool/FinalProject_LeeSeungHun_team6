@@ -1,7 +1,7 @@
 package com.example.ll.finalproject.app.withdraw.service;
 
 import com.example.ll.finalproject.app.member.entity.Member;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.withdraw.dto.request.WithdrawForm;
 import com.example.ll.finalproject.app.withdraw.entity.Withdraw;
 import com.example.ll.finalproject.app.withdraw.repository.WithdrawRepository;

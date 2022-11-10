@@ -2,7 +2,7 @@ package com.example.ll.finalproject.app.base.initData;
 
 import com.example.ll.finalproject.app.article.service.ArticleService;
 import com.example.ll.finalproject.app.cart.service.CartService;
-import com.example.ll.finalproject.app.member.servie.MemberService;
+import com.example.ll.finalproject.app.member.service.MemberService;
 import com.example.ll.finalproject.app.mybook.service.MyBookService;
 import com.example.ll.finalproject.app.order.service.OrderService;
 import com.example.ll.finalproject.app.product.service.ProductService;

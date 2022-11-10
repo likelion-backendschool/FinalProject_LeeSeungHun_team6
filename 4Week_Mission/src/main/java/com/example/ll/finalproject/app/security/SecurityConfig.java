@@ -1,58 +1,69 @@
 package com.example.ll.finalproject.app.security;
 
+import com.example.ll.finalproject.app.security.filter.JwtAuthorizationFilter;
+import com.example.ll.finalproject.app.security.handler.ApiAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
-    private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final ApiAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(
-                        csrf -> csrf.disable()
+                .antMatcher("/api/**")
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                )
+                .httpBasic().disable()
+                .csrf().disable()
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource())
                 )
                 .authorizeRequests(
                         authorizeRequests -> authorizeRequests
-                                .antMatchers("/**")
-                                .permitAll()
+                                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                .antMatchers("/api/*/member/login").permitAll()
+                                .anyRequest()
+                                .authenticated() // 최소자격 : 로그인
                 )
-                .formLogin(
-                        formLogin -> formLogin
-                                .loginPage("/member/login") // GET
-                                .loginProcessingUrl("/member/login") // POST
-                                .defaultSuccessUrl("/")
-                                .successHandler(authenticationSuccessHandler) //로그인 성공 핸들러
-                                .failureHandler(authenticationFailureHandler) //로그인 실패 핸들러
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(STATELESS)
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/member/logout")
-                );
+                .formLogin().disable()
+                .addFilterBefore(
+                        jwtAuthorizationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .logout().disable();
+
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-    /* 권한 인증 받기 (로그인) */
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/api/**", corsConfiguration);
+        return urlBasedCorsConfigurationSource;
     }
 }
+
